@@ -175,9 +175,32 @@ export interface QuizSession {
 // ── Performance Analyzer ──
 export interface SubjectScore {
   subject: string;
-  score: number;
-  maxScore: number;
+  score?: number; // Legacy
+  maxScore?: number; // Legacy
+  ia1Score: number;
+  ia1Max: number;
+  ia2Score: number;
+  ia2Max: number;
+  attendance?: number;
   grade: string;
+}
+
+export interface StudyPlan {
+  dailySchedule: string[];
+  weeklyStrategy: string;
+  timeAllocation: {
+    weakSubjectsPercentage: number;
+    moderateSubjectsPercentage: number;
+    strongSubjectsPercentage: number;
+  };
+}
+
+export interface SubjectAnalysis {
+  subject: string;
+  trend: 'Improvement' | 'Decline' | 'Stable';
+  performanceLevel: 'Excellent' | 'Good' | 'Average' | 'Needs Improvement';
+  needsUrgentAttention: boolean;
+  focusPriority: 'High' | 'Medium' | 'Low';
 }
 
 export interface PerformanceReport {
@@ -187,6 +210,10 @@ export interface PerformanceReport {
   overallPercent: number;
   strengths: string[];
   weaknesses: string[];
+  subjectAnalyses?: SubjectAnalysis[];
+  studyPlan?: StudyPlan;
+  expectedSemesterScore?: number;
+  motivationalFeedback?: string;
   improvementPlan: string[];
   createdAt: string;
 }

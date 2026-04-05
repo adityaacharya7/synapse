@@ -464,18 +464,27 @@ export const analyzeStudentPerformance = async (
   strengths: string[];
   weaknesses: string[];
   improvementPlan: string[];
+  subjectAnalyses?: any[];
+  studyPlan?: any;
+  expectedSemesterScore?: number;
+  motivationalFeedback?: string;
 }> => {
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: `You are an expert academic counselor. Analyze the following exam results for a student${targetRole ? ` targeting a career as a ${targetRole}` : ''} (level: ${currentLevel}).
+    contents: `You are an expert academic counselor analyzing student performance across two internal assessments (IA1 and IA2)${targetRole ? ` aiming for a career as a ${targetRole}` : ''} (level: ${currentLevel}).
 
-    Exam: ${examName}
-    Subjects: ${JSON.stringify(subjects)}
+    Context:
+    Exam Context: ${examName}
+    Subjects Data: ${JSON.stringify(subjects)}
 
-    Provide:
-    1. strengths: 3-5 specific strengths based on high-scoring subjects
-    2. weaknesses: 3-5 specific weaknesses based on low-scoring subjects
-    3. improvementPlan: 5-8 ACTIONABLE, SPECIFIC steps to improve weak areas (not generic advice)`,
+    Provide a highly detailed JSON response:
+    1. strengths: 3-5 specific strengths based on high-scoring or improving subjects.
+    2. weaknesses: 3-5 specific weaknesses based on low-scoring or declining subjects.
+    3. improvementPlan: 5-8 ACTIONABLE, SPECIFIC steps to improve weak areas.
+    4. subjectAnalyses: Analyze each subject's trend between IA1 and IA2 (Improvement/Decline/Stable), assign a performance level (Excellent/Good/Average/Needs Improvement), flag if it needs urgent attention, and assign a focus priority (High/Medium/Low).
+    5. studyPlan: Generate a personalized study plan with a daily schedule array, a weekly strategy string, and time allocation percentages based on weak/moderate/strong subjects.
+    6. expectedSemesterScore: Predict a realistic % score out of 100 for the upcoming semester exam based on current trends.
+    7. motivationalFeedback: A 2-3 sentence encouraging message.`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -483,9 +492,42 @@ export const analyzeStudentPerformance = async (
         properties: {
           strengths: { type: Type.ARRAY, items: { type: Type.STRING } },
           weaknesses: { type: Type.ARRAY, items: { type: Type.STRING } },
-          improvementPlan: { type: Type.ARRAY, items: { type: Type.STRING } }
+          improvementPlan: { type: Type.ARRAY, items: { type: Type.STRING } },
+          subjectAnalyses: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                subject: { type: Type.STRING },
+                trend: { type: Type.STRING, enum: ['Improvement', 'Decline', 'Stable'] },
+                performanceLevel: { type: Type.STRING, enum: ['Excellent', 'Good', 'Average', 'Needs Improvement'] },
+                needsUrgentAttention: { type: Type.BOOLEAN },
+                focusPriority: { type: Type.STRING, enum: ['High', 'Medium', 'Low'] }
+              },
+              required: ["subject", "trend", "performanceLevel", "needsUrgentAttention", "focusPriority"]
+            }
+          },
+          studyPlan: {
+            type: Type.OBJECT,
+            properties: {
+              dailySchedule: { type: Type.ARRAY, items: { type: Type.STRING } },
+              weeklyStrategy: { type: Type.STRING },
+              timeAllocation: {
+                type: Type.OBJECT,
+                properties: {
+                  weakSubjectsPercentage: { type: Type.NUMBER },
+                  moderateSubjectsPercentage: { type: Type.NUMBER },
+                  strongSubjectsPercentage: { type: Type.NUMBER }
+                },
+                required: ["weakSubjectsPercentage", "moderateSubjectsPercentage", "strongSubjectsPercentage"]
+              }
+            },
+            required: ["dailySchedule", "weeklyStrategy", "timeAllocation"]
+          },
+          expectedSemesterScore: { type: Type.NUMBER },
+          motivationalFeedback: { type: Type.STRING }
         },
-        required: ["strengths", "weaknesses", "improvementPlan"]
+        required: ["strengths", "weaknesses", "improvementPlan", "subjectAnalyses", "studyPlan", "expectedSemesterScore", "motivationalFeedback"]
       }
     }
   });
