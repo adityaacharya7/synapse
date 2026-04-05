@@ -299,7 +299,7 @@ const PrepPlanner: React.FC = () => {
 
   // Quest UI (Rendered after Setup)
   return (
-    <div className="p-6 md:p-10 max-w-7xl mx-auto space-y-10 animate-in fade-in duration-500 text-gray-900 dark:text-white">
+    <div className="p-6 md:p-10 xl:px-12 w-full max-w-[1600px] mx-auto space-y-10 animate-in fade-in duration-500 text-gray-900 dark:text-white">
 
       {/* 1. Quest Header */}
       <header className="bg-white dark:bg-slate-950 rounded-3xl p-8 border border-gray-100 dark:border-slate-800 shadow-sm relative overflow-hidden">

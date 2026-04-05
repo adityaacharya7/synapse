@@ -166,26 +166,26 @@ const AdvisorChat: React.FC = () => {
   const isEmptyState = messages.length <= 1;
 
   return (
-    <div className="h-screen flex bg-slate-950 transition-colors overflow-hidden">
+    <div className="h-screen flex bg-bg-base transition-colors duration-300 overflow-hidden text-text-primary">
       {/* ── History Sidebar ── */}
       <div
-        className="h-full flex-shrink-0 border-r border-slate-800/60 flex flex-col overflow-hidden transition-all duration-300 ease-in-out"
+        className="h-full flex-shrink-0 border-r border-border-subtle flex flex-col overflow-hidden transition-all duration-300 ease-in-out bg-surface/50"
         style={{
           width: sidebarOpen ? '300px' : '0px',
           minWidth: sidebarOpen ? '300px' : '0px',
           opacity: sidebarOpen ? 1 : 0,
         }}
       >
-        <div className="p-5 border-b border-slate-800/60 flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white uppercase tracking-widest">History</h2>
-          <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-slate-800 transition-colors">
+        <div className="p-5 border-b border-border-subtle flex items-center justify-between">
+          <h2 className="text-sm font-bold text-text-primary uppercase tracking-widest">History</h2>
+          <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors">
             <X size={16} />
           </button>
         </div>
         <div className="p-3">
           <button
             onClick={() => { createNewSession(); setSidebarOpen(false); }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-400 border border-dashed border-brand-500/30 hover:bg-brand-500/10 hover:border-brand-500/50 transition-all"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-600 dark:text-brand-400 border border-dashed border-brand-500/30 hover:bg-brand-500/10 hover:border-brand-500/50 transition-all"
           >
             <Plus size={16} />
             New Chat
@@ -198,16 +198,16 @@ const AdvisorChat: React.FC = () => {
               onClick={() => { setActiveSessionId(session.id); setSidebarOpen(false); }}
               className={`w-full text-left px-4 py-3 rounded-xl text-sm transition-all group ${
                 session.id === activeSessionId
-                  ? 'bg-brand-600/15 text-brand-300 font-semibold'
-                  : 'text-gray-400 hover:bg-slate-800/60 hover:text-white'
+                  ? 'bg-brand-600/15 text-brand-700 dark:text-brand-300 font-semibold'
+                  : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary'
               }`}
             >
               <p className="truncate">{session.title}</p>
-              <p className="text-[10px] text-gray-600 mt-1">{formatDate(session.createdAt)} · {session.messages.length} msgs</p>
+              <p className="text-[10px] text-text-muted mt-1">{formatDate(session.createdAt)} · {session.messages.length} msgs</p>
             </button>
           ))}
           {sessions.length === 0 && (
-            <p className="text-center text-gray-600 text-xs mt-8 px-4">No conversations yet. Start a new chat!</p>
+            <p className="text-center text-text-muted text-xs mt-8 px-4">No conversations yet. Start a new chat!</p>
           )}
         </div>
       </div>
@@ -215,11 +215,11 @@ const AdvisorChat: React.FC = () => {
       {/* ── Main Chat Area ── */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="px-6 py-4 flex items-center justify-between sticky top-0 z-20 chat-header-glass">
+        <header className="px-6 py-4 flex items-center justify-between sticky top-0 z-20 bg-surface/80 backdrop-blur-xl shadow-sm border-b border-border-subtle">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-slate-800 transition-all"
+              className="p-2.5 rounded-xl text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all"
               title="Chat history"
             >
               <MessageSquare size={20} />
@@ -228,34 +228,38 @@ const AdvisorChat: React.FC = () => {
               <Bot size={24} />
             </div>
             <div>
-              <h1 className="font-bold text-lg text-white">Study Buddy</h1>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-sm shadow-emerald-400/50"></span>
-                <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.15em]">Ready to help you learn</span>
+              <div className="flex items-center gap-3">
+                <h1 className="font-bold text-lg text-text-primary">Study Buddy</h1>
+                <div className="flex items-center gap-1 border-l border-border-subtle pl-3 ml-1">
+                  <button
+                    onClick={() => { createNewSession(); }}
+                    className="p-1.5 rounded-lg text-text-muted hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-500/10 transition-all"
+                    title="New chat"
+                  >
+                    <Plus size={16} />
+                  </button>
+                  <button
+                    onClick={clearChat}
+                    className="p-1.5 rounded-lg text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-all"
+                    title="Delete chat"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-sm shadow-emerald-500/50"></span>
+                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-[0.15em]">Ready to help you learn</span>
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => { createNewSession(); }}
-              className="p-2.5 rounded-xl text-gray-400 hover:text-brand-400 hover:bg-brand-500/10 transition-all"
-              title="New chat"
-            >
-              <Plus size={20} />
-            </button>
-            <button
-              onClick={clearChat}
-              className="p-2.5 rounded-xl text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
-              title="Delete chat"
-            >
-              <Trash2 size={18} />
-            </button>
-          </div>
+          {/* Right side left empty to clear global DashboardHeader */}
+          <div></div>
         </header>
 
         {/* Messages */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto custom-scrollbar chat-bg-pattern">
-          <div className="max-w-4xl mx-auto px-6 py-8">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto custom-scrollbar chat-bg-pattern dark:chat-bg-pattern-dark">
+          <div className="w-full max-w-[1600px] mx-auto px-6 xl:px-24 py-8">
             {/* Messages list */}
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} mb-6`}>
@@ -263,30 +267,30 @@ const AdvisorChat: React.FC = () => {
                   {/* Avatar */}
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 ${
                     msg.role === 'user'
-                      ? 'bg-slate-800 text-gray-400 border border-slate-700'
+                      ? 'bg-surface border border-border-subtle text-text-muted'
                       : 'bg-brand-600 text-white shadow-md shadow-brand-500/30 ai-avatar-ring'
                   }`}>
                     {msg.role === 'user' ? <User size={18} /> : <Sparkles size={18} />}
                   </div>
                   {/* Bubble + timestamp */}
                   <div className="flex flex-col">
-                    <div className={`px-5 py-4 rounded-2xl text-[15px] leading-relaxed overflow-hidden ${
+                    <div className={`px-5 py-4 rounded-3xl text-[15px] leading-relaxed overflow-hidden ${
                       msg.role === 'user'
-                        ? 'bg-brand-600 text-white rounded-tr-sm'
-                        : 'chat-ai-bubble rounded-tl-sm'
+                        ? 'bg-brand-600 text-white rounded-tr-sm shadow-sm'
+                        : 'chat-ai-bubble bg-surface border border-border-subtle text-text-primary rounded-tl-sm shadow-sm'
                     }`}>
-                      <div className={`prose prose-sm dark:prose-invert max-w-none ${
+                      <div className={`prose prose-sm max-w-none ${
                         msg.role === 'user'
                           ? 'prose-p:text-white prose-headings:text-white prose-strong:text-white prose-li:text-white prose-code:text-brand-200'
-                          : 'prose-p:text-gray-200 prose-headings:text-white prose-strong:text-brand-300 prose-code:text-brand-300 prose-li:text-gray-300'
+                          : 'dark:prose-invert prose-p:text-text-primary prose-headings:text-text-primary prose-strong:text-brand-600 dark:prose-strong:text-brand-300 prose-code:text-brand-600 dark:prose-code:text-brand-300 prose-li:text-text-secondary'
                       }`}>
                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                       </div>
                     </div>
                     {msg.timestamp && (
                       <div className={`flex items-center gap-1 mt-1.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <Clock size={10} className="text-gray-600" />
-                        <span className="text-[10px] text-gray-600">{formatTime(msg.timestamp)}</span>
+                        <Clock size={10} className="text-text-muted" />
+                        <span className="text-[10px] text-text-muted">{formatTime(msg.timestamp)}</span>
                       </div>
                     )}
                   </div>
@@ -301,7 +305,7 @@ const AdvisorChat: React.FC = () => {
                   <div className="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-md shadow-brand-500/30 ai-avatar-ring">
                     <Sparkles size={18} />
                   </div>
-                  <div className="chat-ai-bubble px-5 py-4 rounded-2xl rounded-tl-sm">
+                  <div className="chat-ai-bubble bg-surface border border-border-subtle px-5 py-4 rounded-3xl rounded-tl-sm shadow-sm">
                     <div className="flex items-center gap-1.5">
                       <div className="typing-dot" style={{ animationDelay: '0ms' }}></div>
                       <div className="typing-dot" style={{ animationDelay: '150ms' }}></div>
@@ -316,10 +320,10 @@ const AdvisorChat: React.FC = () => {
             {isEmptyState && !loading && (
               <div className="flex flex-col items-center justify-center mt-8">
                 <div className="w-20 h-20 rounded-3xl bg-brand-600/15 flex items-center justify-center mb-6 ai-avatar-ring">
-                  <Sparkles size={36} className="text-brand-400" />
+                  <Sparkles size={36} className="text-brand-600 dark:text-brand-400" />
                 </div>
-                <h2 className="text-xl font-bold text-white mb-2">What can I help you with?</h2>
-                <p className="text-gray-500 text-sm mb-8 text-center max-w-md">
+                <h2 className="text-xl font-bold text-text-primary mb-2">What can I help you with?</h2>
+                <p className="text-text-secondary text-sm mb-8 text-center max-w-md">
                   Ask me anything — from explaining complex concepts to creating study plans, quizzing you, or helping with homework.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3 w-full max-w-2xl">
@@ -327,11 +331,11 @@ const AdvisorChat: React.FC = () => {
                     <button
                       key={i}
                       onClick={() => handleQuickPrompt(qp.prompt)}
-                      className="group flex items-center gap-3 px-4 py-3.5 rounded-xl border border-slate-800 bg-slate-900/50 hover:bg-brand-600/10 hover:border-brand-500/30 text-left transition-all duration-200"
+                      className="group flex items-center gap-3 px-4 py-3.5 rounded-xl border border-border-subtle bg-surface hover:bg-brand-500/5 hover:border-brand-500/30 text-left transition-all duration-200 shadow-sm"
                     >
                       <span className="text-xl group-hover:scale-110 transition-transform">{qp.icon}</span>
-                      <span className="text-sm text-gray-400 group-hover:text-brand-300 transition-colors font-medium">{qp.label}</span>
-                      <ChevronRight size={14} className="ml-auto text-gray-700 group-hover:text-brand-400 transition-colors" />
+                      <span className="text-sm text-text-secondary group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors font-medium">{qp.label}</span>
+                      <ChevronRight size={14} className="ml-auto text-text-muted group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors" />
                     </button>
                   ))}
                 </div>
@@ -341,11 +345,11 @@ const AdvisorChat: React.FC = () => {
         </div>
 
         {/* Input bar */}
-        <div className="border-t border-slate-800/60 bg-slate-950/90 backdrop-blur-md">
-          <div className="max-w-4xl mx-auto px-6 py-4">
-            <div className="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-2xl px-4 py-1 focus-within:border-brand-500/40 focus-within:ring-2 focus-within:ring-brand-500/10 transition-all">
+        <div className="border-t border-border-subtle bg-surface/90 backdrop-blur-md pb-4 md:pb-6">
+          <div className="w-full max-w-[1600px] mx-auto px-6 xl:px-24 pt-4 pb-2">
+            <div className="flex items-center gap-3 bg-bg-base border border-border-subtle rounded-2xl px-4 py-1 focus-within:border-brand-500/40 focus-within:ring-2 focus-within:ring-brand-500/10 transition-all shadow-sm">
               <button
-                className="p-2 text-gray-600 hover:text-brand-400 transition-colors flex-shrink-0"
+                className="p-2 text-text-muted hover:text-brand-600 transition-colors flex-shrink-0"
                 title="Attach file"
               >
                 <Paperclip size={18} />
@@ -353,14 +357,14 @@ const AdvisorChat: React.FC = () => {
               <input
                 ref={inputRef}
                 type="text"
-                className="flex-1 py-3.5 bg-transparent outline-none text-white text-[15px] placeholder:text-gray-600"
+                className="flex-1 py-3.5 bg-transparent outline-none text-text-primary text-[15px] placeholder:text-text-muted"
                 placeholder="Ask about any subject, concept, or study strategy..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               />
               <button
-                className="p-2 text-gray-600 hover:text-brand-400 transition-colors flex-shrink-0"
+                className="p-2 text-text-muted hover:text-brand-600 transition-colors flex-shrink-0"
                 title="Voice input"
               >
                 <Mic size={18} />
@@ -368,12 +372,12 @@ const AdvisorChat: React.FC = () => {
               <button
                 onClick={() => handleSend()}
                 disabled={loading || !input.trim()}
-                className="p-2.5 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-all disabled:bg-slate-800 disabled:text-gray-600 active:scale-95 flex-shrink-0"
+                className="p-2.5 bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-all disabled:opacity-50 disabled:bg-brand-600 active:scale-95 flex-shrink-0"
               >
                 <Send size={18} />
               </button>
             </div>
-            <p className="text-center text-[10px] text-gray-700 mt-3 uppercase font-black tracking-[0.2em]">
+            <p className="text-center text-[10px] text-text-muted mt-3 uppercase font-black tracking-[0.2em]">
               Powered by Gemini 2.5 Flash
             </p>
           </div>

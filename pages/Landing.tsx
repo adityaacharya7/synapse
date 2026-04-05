@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   XCircle,
@@ -8,48 +8,68 @@ import {
   Sparkles,
   Shield,
   Menu,
-  X
+  X,
+  Sun,
+  Moon
 } from 'lucide-react';
 import Ballpit from '../src/components/Ballpit';
 import { motion } from 'framer-motion';
+import VariableProximity from '../src/components/VariableProximity';
+import TextType from '../src/components/TextType';
+import StaggeredMenu from '../src/components/StaggeredMenu';
+import { useTheme } from '../App';
 
 const Landing: React.FC = () => {
+  const { isDark, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="bg-white dark:bg-slate-950 transition-colors">
+    <div className="bg-bg-base transition-colors min-h-screen">
 
-      {/* NAVBAR */}
-      <nav className="fixed top-0 inset-x-0 z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-gray-100 dark:border-slate-800">
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-
-          <Link to="/" className="flex items-center gap-2.5">
-            <img src="/logo.png" className="w-10 h-10" />
-            <span className="text-xl font-bold text-gray-900 dark:text-white font-logo">
-              Synapse
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#news" className="text-sm font-semibold text-gray-600 dark:text-gray-300">News</a>
-            <a href="#contact" className="text-sm font-semibold text-gray-600 dark:text-gray-300">Contact</a>
-
-            <Link
-              to="/login"
-              className="px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg text-sm font-bold"
-            >
-              Log In
+      {/* Separate Logo Container */}
+      <div className="absolute top-0 inset-x-0 z-[60] pointer-events-none">
+        <div className="container mx-auto px-6 h-28 flex items-center justify-between pointer-events-auto">
+          <div className="flex items-center gap-6">
+            <Link to="/" className="group flex items-center gap-3">
+              <div className="p-2 bg-surface/40 backdrop-blur-md rounded-xl border border-border-subtle shadow-sm group-hover:scale-110 transition-transform duration-300">
+                <img src="/logo.png" className="w-8 h-8 drop-shadow-md" alt="Synapse" />
+              </div>
+              <span className="text-2xl font-bold text-text-primary font-logo drop-shadow-sm group-hover:text-brand-400 transition-colors duration-300">
+                Synapse
+              </span>
             </Link>
-          </div>
 
-          <button
-            className="md:hidden p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+            <div className="h-8 w-px bg-border-subtle opacity-20 mx-1 hidden sm:block" />
+
+            {/* Theme Toggle Button - Moved to left to avoid menu interference */}
+            <button
+              onClick={toggleTheme}
+              className="p-3 bg-surface/40 backdrop-blur-md border border-border-subtle rounded-xl text-text-primary hover:text-brand-500 hover:border-brand-500/30 transition-all duration-300 shadow-sm"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
         </div>
-      </nav>
+      </div>
+
+      {/* Staggered Navigation Menu exactly matching React Bits props */}
+      <StaggeredMenu
+        isFixed={true}
+        accentColor="#c629ff"
+        menuButtonColor="#9ca3af"
+        openMenuButtonColor="#000000"
+        displayItemNumbering={true}
+        className="z-[70]"
+        items={[
+          { label: 'ABOUT', link: '#/about', ariaLabel: 'About us' },
+          { label: 'Contact', link: '#contact', ariaLabel: 'Contact us' },
+          { label: 'Log In', link: '#/login', ariaLabel: 'Log in to your account' }
+        ]}
+        socialItems={[]}
+        displaySocials={false}
+      />
 
 
       {/* HERO */}
@@ -67,8 +87,8 @@ const Landing: React.FC = () => {
           />
         </div>
 
-        {/* Dark gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/40 to-slate-950/80 pointer-events-none z-[1]" />
+        {/* Semantic gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-bg-base/70 via-bg-base/40 to-bg-base/80 pointer-events-none z-[1]" />
 
         {/* Ambient glow blobs */}
         <motion.div
@@ -93,37 +113,44 @@ const Landing: React.FC = () => {
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8 shadow-lg"
           >
             <Sparkles size={14} className="text-purple-400" />
-            <span className="text-sm font-bold text-white/90 tracking-wide">AI-Powered Study Platform</span>
+            <span className="text-sm font-bold text-text-primary tracking-wide">AI-Powered Study Platform</span>
           </motion.div>
 
-          {/* Main heading — word by word stagger */}
-          <div className="text-6xl md:text-7xl lg:text-9xl font-black text-white mb-8 leading-[0.95] tracking-tight">
-            {['Study', 'Smarter'].map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 50, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.7, delay: 0.3 + i * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="inline-block mr-[0.25em]"
-              >
-                {word}
-              </motion.span>
-            ))}
-            <br />
-            <span className="relative inline-block">
-              {['with', 'AI', 'Power'].map((word, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 50, filter: 'blur(8px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  transition={{ duration: 0.7, delay: 0.6 + i * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="inline-block mr-[0.25em] bg-gradient-to-r from-purple-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent"
-                  style={{ backgroundSize: '200% auto', animation: 'gradientShift 4s ease-in-out infinite' }}
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </span>
+          {/* Main heading — interactive variable font proximity */}
+          <div className="text-[min(10vw,6rem)] md:text-[min(8vw,7rem)] lg:text-9xl text-text-primary mb-8 leading-[1.05] tracking-tight cursor-default max-w-full" ref={containerRef}>
+            <motion.div
+              initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <VariableProximity
+                label="Study Smarter"
+                fromFontVariationSettings="'wght' 400"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={110}
+                falloff="gaussian"
+                className="block"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="mt-2"
+            >
+              <VariableProximity
+                label="with AI Power"
+                fromFontVariationSettings="'wght' 400"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={110}
+                falloff="gaussian"
+                className="inline-block bg-gradient-to-r from-purple-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent pb-3"
+                style={{ backgroundSize: '200% auto', animation: 'gradientShift 4s ease-in-out infinite' }}
+              />
+            </motion.div>
           </div>
 
           <style>{`
@@ -131,23 +158,21 @@ const Landing: React.FC = () => {
               0%, 100% { background-position: 0% 50%; }
               50% { background-position: 100% 50%; }
             }
-            @keyframes blink {
-              0%, 100% { opacity: 1; }
-              50% { opacity: 0; }
-            }
           `}</style>
 
-          {/* Subtitle with fade-up */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.0 }}
-            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-14 leading-relaxed font-medium"
-          >
-            Synapse generates quizzes, summarizes notes, analyzes performance,
-            and crafts <span className="text-white font-bold">personalized study plans</span> — all powered by AI
-            <span className="inline-block w-[2px] h-[1.1em] bg-purple-400 ml-1 align-middle" style={{ animation: 'blink 1s step-end infinite' }} />
-          </motion.p>
+          {/* Subtitle with TextType animation */}
+          <div className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-14 leading-relaxed font-medium min-h-[4rem]">
+            <TextType
+              speed={20}
+              delay={1200}
+              segments={[
+                "Synapse generates quizzes, summarizes notes, analyzes performance, and crafts ",
+                { text: "personalized study plans", className: "text-text-primary font-bold" },
+                " — all powered by AI"
+              ]}
+              showCursor={true}
+            />
+          </div>
 
           {/* CTA button */}
           <motion.div
@@ -172,51 +197,51 @@ const Landing: React.FC = () => {
         </div>
 
         {/* Bottom gradient fade into next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-[2]" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg-base to-transparent pointer-events-none z-[2]" />
       </section>
 
 
       {/* PROBLEM + SOLUTION */}
-      <section className="py-32 relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50/50 dark:from-slate-950 dark:via-[#0a0a1a] dark:to-slate-900 border-y dark:border-slate-800/50">
-        
+      <section className="py-32 relative overflow-hidden bg-gradient-to-br from-bg-base via-surface to-bg-base/50 border-y border-border-subtle">
+
         {/* Glowing AI Feature Background */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-          <motion.div 
-            animate={{ 
+          <motion.div
+            animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0.5, 0.3],
             }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -top-[20%] -left-[10%] w-[50rem] h-[50rem] bg-indigo-500/10 dark:bg-indigo-500/10 rounded-full blur-[120px]" 
+            className="absolute -top-[20%] -left-[10%] w-[50rem] h-[50rem] bg-indigo-500/10 dark:bg-indigo-500/10 rounded-full blur-[120px]"
           />
-          <motion.div 
-            animate={{ 
+          <motion.div
+            animate={{
               scale: [1, 1.3, 1],
               opacity: [0.2, 0.4, 0.2],
             }}
             transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute top-[30%] -right-[20%] w-[60rem] h-[60rem] bg-purple-500/10 dark:bg-purple-500/10 rounded-full blur-[150px]" 
+            className="absolute top-[30%] -right-[20%] w-[60rem] h-[60rem] bg-purple-500/10 dark:bg-purple-500/10 rounded-full blur-[150px]"
           />
-           <motion.div 
-            animate={{ 
+          <motion.div
+            animate={{
               scale: [1, 1.1, 1],
               y: [0, -50, 0],
             }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-0 left-[20%] w-[40rem] h-[30rem] bg-brand-400/10 dark:bg-brand-500/10 rounded-full blur-[100px]" 
+            className="absolute bottom-0 left-[20%] w-[40rem] h-[30rem] bg-brand-400/10 dark:bg-brand-500/10 rounded-full blur-[100px]"
           />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
-          
+
           <div className="relative grid lg:grid-cols-[1fr_minmax(0,1fr)] gap-16 lg:gap-32 items-center">
-            
+
             {/* Vertical Divider */}
-            <motion.div 
+            <motion.div
               initial={{ height: 0, opacity: 0 }}
               whileInView={{ height: '100%', opacity: 1 }}
               transition={{ duration: 1.5, ease: "circOut" }}
-              className="hidden lg:block absolute left-1/2 top-0 w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-slate-700 to-transparent -translate-x-1/2"
+              className="hidden lg:block absolute left-1/2 top-0 w-px bg-gradient-to-b from-transparent via-border-subtle to-transparent -translate-x-1/2"
             />
 
             {/* PROBLEMS */}
@@ -232,15 +257,15 @@ const Landing: React.FC = () => {
             >
 
               <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-gray-200 dark:border-slate-700 mb-8 shadow-sm">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface/80 backdrop-blur-md border border-border-subtle mb-8 shadow-sm">
                   <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-sm font-bold uppercase tracking-widest text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-bold uppercase tracking-widest text-text-secondary">
                     The Problem
                   </span>
                 </div>
 
                 {/* Animated gradient heading */}
-                <h2 className="text-5xl lg:text-6xl font-black mb-6 leading-[1.1] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 dark:from-white dark:via-indigo-300 dark:to-white" style={{ backgroundSize: '200% auto', animation: 'gradientMove 8s linear infinite' }}>
+                <h2 className="text-5xl lg:text-6xl font-black mb-6 leading-[1.1] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-text-primary via-indigo-500 to-text-primary" style={{ backgroundSize: '200% auto', animation: 'gradientMove 8s linear infinite' }}>
                   The Study Struggle
                 </h2>
 
@@ -252,7 +277,7 @@ const Landing: React.FC = () => {
                   }
                 `}</style>
 
-                <p className="text-gray-500 dark:text-gray-400 text-xl leading-relaxed max-w-lg font-medium">
+                <p className="text-text-secondary text-xl leading-relaxed max-w-lg font-medium">
                   Most students cram before exams and struggle to organize
                   study material effectively. Synapse fixes that.
                 </p>
@@ -272,12 +297,12 @@ const Landing: React.FC = () => {
                       visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, type: "spring", bounce: 0.4 } }
                     }}
                     whileHover={{ scale: 1.03, y: -4, x: 8 }}
-                    className="group flex items-center gap-4 py-3 px-5 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-xl border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-red-500/5 hover:border-red-200 dark:hover:border-red-900/50 transition-all duration-300 cursor-default"
+                    className="group flex items-center gap-4 py-3 px-5 bg-surface/80 backdrop-blur-xl rounded-xl border border-border-subtle shadow-sm hover:shadow-xl hover:shadow-red-500/5 hover:border-red-200 transition-all duration-300 cursor-default"
                   >
-                    <div className="w-10 h-10 shrink-0 flex items-center justify-center bg-white dark:bg-slate-800 rounded-lg border border-gray-100 dark:border-slate-700 shadow-md group-hover:bg-red-50 dark:group-hover:bg-red-500/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                    <div className="w-10 h-10 shrink-0 flex items-center justify-center bg-bg-base rounded-lg border border-border-subtle shadow-md group-hover:bg-red-50 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                       <XCircle className="text-red-500 w-5 h-5" />
                     </div>
-                    <p className="font-semibold text-gray-700 dark:text-gray-300 text-base">
+                    <p className="font-semibold text-text-primary text-base">
                       {text}
                     </p>
                   </motion.div>
@@ -298,27 +323,27 @@ const Landing: React.FC = () => {
               className="relative pl-0 lg:pl-8"
             >
               {/* Strengthened decorative background glow */}
-              <motion.div 
+              <motion.div
                 animate={{ opacity: [0.4, 0.6, 0.4], scale: [1, 1.05, 1] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute -inset-16 bg-gradient-to-tr from-brand-500 via-indigo-500 to-cyan-400 opacity-40 dark:opacity-50 blur-[100px] rounded-[4rem] pointer-events-none"
               ></motion.div>
 
-              <motion.div 
+              <motion.div
                 variants={{ hidden: { opacity: 0, y: 60, rotateX: 10 }, visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 1, type: "spring", bounce: 0.3 } } }}
                 style={{ perspective: 1000 }}
-                className="relative bg-white/60 dark:bg-slate-900/60 backdrop-blur-3xl p-8 md:p-12 rounded-[2.5rem] border border-white/80 dark:border-slate-700/50 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]"
+                className="relative bg-surface/60 backdrop-blur-3xl p-8 md:p-12 rounded-[2.5rem] border border-border-subtle shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)]"
               >
-                
+
                 <div className="flex items-center gap-5 mb-12">
-                  <motion.div 
+                  <motion.div
                     whileHover={{ rotate: 10, scale: 1.1 }}
                     className="p-4 bg-gradient-to-tr from-brand-600 to-indigo-500 rounded-2xl shadow-xl shadow-brand-500/40"
                   >
                     <Shield className="text-white w-8 h-8" />
                   </motion.div>
                   <div>
-                    <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300">
+                    <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-text-primary to-text-secondary">
                       Synapse Solution
                     </h3>
                   </div>
@@ -365,9 +390,9 @@ const Landing: React.FC = () => {
                     >
                       <div className={`shrink-0 w-14 h-14 flex items-center justify-center rounded-2xl border shadow-sm group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300 relative ${feature.iconBg}`}>
                         {feature.icon}
-                        
+
                         {/* Apple-style Animated Checkmark */}
-                        <motion.div 
+                        <motion.div
                           className="absolute -bottom-2 -right-2 bg-green-500 rounded-full w-7 h-7 flex items-center justify-center border-[3px] border-white dark:border-slate-900 shadow-lg"
                           initial={{ scale: 0, opacity: 0 }}
                           whileInView={{ scale: [0, 1.2, 1], opacity: 1 }}
@@ -375,8 +400,8 @@ const Landing: React.FC = () => {
                           transition={{ delay: i * 0.3 + 1, duration: 0.5, type: "spring", stiffness: 200, damping: 12 }}
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-                            <motion.path 
-                              d="M20 6L9 17l-5-5" 
+                            <motion.path
+                              d="M20 6L9 17l-5-5"
                               initial={{ pathLength: 0 }}
                               whileInView={{ pathLength: 1 }}
                               viewport={{ once: true }}
@@ -390,7 +415,7 @@ const Landing: React.FC = () => {
                         <p className={`font-black ${feature.titleClass} mb-2 tracking-wide text-sm`}>
                           {feature.title}
                         </p>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed font-medium">
+                        <p className="text-text-secondary text-sm md:text-base leading-relaxed font-medium">
                           {feature.desc}
                         </p>
                       </div>
@@ -405,16 +430,97 @@ const Landing: React.FC = () => {
       </section>
 
 
-      {/* FOOTER */}
-      <footer className="py-20 border-t dark:border-slate-800">
-        <div className="container mx-auto px-6 text-center">
+      {/* DETAILED FOOTER */}
+      <footer className="relative pt-16 pb-8 overflow-hidden bg-surface/30 border-t border-border-subtle">
+        {/* Decorative background glow */}
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-500/5 rounded-full blur-[120px] pointer-events-none" />
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            {/* Brand Section */}
+            <div className="space-y-6">
+              <Link to="/" className="flex items-center gap-3">
+                <div className="p-2 bg-bg-base/80 backdrop-blur-md rounded-xl border border-border-subtle shadow-sm">
+                  <img src="/logo.png" className="w-6 h-6" alt="Synapse" />
+                </div>
+                <span className="text-xl font-bold text-text-primary font-logo">Synapse</span>
+              </Link>
+              <p className="text-text-secondary text-sm leading-relaxed max-w-xs transition-opacity hover:opacity-100 opacity-80">
+                Elevating academic potential through intelligent AI assistance. Study smarter, retain more, and achieve your goals.
+              </p>
+              <div className="flex gap-4">
+                {['Twitter', 'GitHub', 'LinkedIn'].map((social) => (
+                  <a key={social} href="#" className="w-10 h-10 rounded-xl bg-bg-base border border-border-subtle flex items-center justify-center text-text-muted hover:text-brand-500 hover:border-brand-500/30 hover:scale-110 transition-all duration-300">
+                    <span className="sr-only">{social}</span>
+                    <div className="w-5 h-5 bg-current mask-icon" style={{ maskImage: `url(/icons/${social.toLowerCase()}.svg)` }} />
+                  </a>
+                ))}
+              </div>
+            </div>
 
-          <img src="/logo.png" className="w-10 mx-auto mb-6" />
+            {/* Product Links */}
+            <div>
+              <h4 className="text-sm font-black uppercase tracking-[0.2em] text-text-primary mb-8">Product</h4>
+              <ul className="space-y-4">
+                {['AI Quiz Maker', 'Notes Summarizer', 'Performance Tracker', 'Exam Planner', 'Advisor Chat'].map((item) => (
+                  <li key={item}>
+                    <Link to="/login" className="text-text-secondary hover:text-brand-400 text-sm font-medium transition-colors">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <p className="text-gray-500 dark:text-gray-400">
-            © 2026 Synapse — Study smarter, not harder.
-          </p>
+            {/* Resources Links */}
+            <div>
+              <h4 className="text-sm font-black uppercase tracking-[0.2em] text-text-primary mb-8">Resources</h4>
+              <ul className="space-y-4">
+                {['Documentation', 'Study Tips', 'API Tokens', 'Community', 'Status'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-text-secondary hover:text-brand-400 text-sm font-medium transition-colors">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
+            {/* PCE Credit Section */}
+            <div className="lg:pl-8 border-l-0 lg:border-l border-border-subtle">
+              <h4 className="text-sm font-black uppercase tracking-[0.2em] text-text-primary mb-8">Development</h4>
+              <div className="p-6 rounded-2xl bg-bg-base border border-border-subtle space-y-4">
+                <p className="text-xs text-text-secondary font-medium leading-relaxed">
+                  Developed as part of academic learning and exploration at:
+                </p>
+                <a 
+                  href="https://www.pce.ac.in/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group block"
+                >
+                  <p className="text-sm font-black text-text-primary group-hover:text-brand-500 transition-colors">
+                    Pillai College of Engineering (PCE)
+                  </p>
+                  <div className="flex items-center gap-2 mt-2 text-[10px] font-bold text-brand-500 uppercase tracking-widest group-hover:gap-3 transition-all">
+                    Visit Website <ArrowRight size={12} />
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-text-muted text-xs font-medium">
+              © 2026 Synapse AI. All rights reserved. Built with ❤️ for students globally.
+            </p>
+            <div className="flex gap-8">
+              <a href="#" className="text-text-muted hover:text-text-primary text-[10px] font-black uppercase tracking-widest transition-colors">Privacy Policy</a>
+              <a href="#" className="text-text-muted hover:text-text-primary text-[10px] font-black uppercase tracking-widest transition-colors">Terms of Service</a>
+              <a href="#" className="text-text-muted hover:text-text-primary text-[10px] font-black uppercase tracking-widest transition-colors">Cookies</a>
+            </div>
+          </div>
         </div>
       </footer>
 

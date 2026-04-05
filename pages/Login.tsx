@@ -85,25 +85,45 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     const initializeGoogleSignIn = () => {
-      if (window.google) {
+      // Ensure both google and accounts exist
+      if (window.google && window.google.accounts) {
         try {
           window.google.accounts.id.initialize({
             client_id: '1065445353526-mrtre7f9o0p6p0v0p0p0p0p0p0p0p0.apps.googleusercontent.com',
             callback: handleCredentialResponse,
+            auto_select: false,
+            context: 'signin'
           });
+          
           if (googleBtnRef.current) {
             window.google.accounts.id.renderButton(googleBtnRef.current, {
-              theme: 'outline', size: 'large', width: '100%', text: 'signin_with',
+              theme: 'outline', 
+              size: 'large', 
+              width: '100%', 
+              text: 'signin_with',
+              shape: 'rectangular',
+              logo_alignment: 'left'
             });
           }
         } catch (err) {
-          console.warn('Google Sign-In initialization failed.');
+          console.warn('Google Sign-In initialization failed:', err);
         }
       }
     };
+
+    // Polling with a safety limit
+    let attempts = 0;
     const checkInterval = setInterval(() => {
-      if (window.google) { initializeGoogleSignIn(); clearInterval(checkInterval); }
+      attempts++;
+      if (window.google && window.google.accounts) { 
+        initializeGoogleSignIn(); 
+        clearInterval(checkInterval); 
+      } else if (attempts > 50) { // Timeout after 5 seconds
+        clearInterval(checkInterval);
+        console.warn('Google accounts script was not available in time.');
+      }
     }, 100);
+
     return () => clearInterval(checkInterval);
   }, []);
 
@@ -114,7 +134,7 @@ const Login: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex bg-slate-950 overflow-hidden relative">
+    <div className="min-h-screen flex bg-bg-base overflow-hidden relative transition-colors">
 
       {/* Ambient background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -140,10 +160,10 @@ const Login: React.FC = () => {
         >
           <div className="flex items-center gap-4 mb-10">
             <img src="/logo.png" alt="Synapse" className="w-14 h-14 rounded-2xl shadow-2xl shadow-brand-500/30" />
-            <span className="text-3xl font-black text-white font-logo">Synapse</span>
+            <span className="text-3xl font-black text-text-primary font-logo">Synapse</span>
           </div>
 
-          <h2 className="text-5xl font-black text-white leading-[1.1] mb-6 tracking-tight">
+          <h2 className="text-5xl font-black text-text-primary leading-[1.1] mb-6 tracking-tight">
             Your AI-powered
             <br />
             <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
@@ -151,7 +171,7 @@ const Login: React.FC = () => {
             </span>
           </h2>
 
-          <p className="text-gray-400 text-lg leading-relaxed mb-12 font-medium">
+          <p className="text-text-secondary text-lg leading-relaxed mb-12 font-medium">
             Join thousands of students using Synapse to study smarter, ace exams, and build their careers with AI.
           </p>
 
@@ -163,12 +183,12 @@ const Login: React.FC = () => {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 + i * 0.15 }}
-                className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-white/10 transition-all group"
+                className="flex items-center gap-4 p-4 bg-surface/40 backdrop-blur-sm rounded-2xl border border-border-subtle hover:bg-surface/80 transition-all group shadow-sm"
               >
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
                   <f.icon size={22} className="text-white" />
                 </div>
-                <span className="text-white font-bold text-sm">{f.label}</span>
+                <span className="text-text-primary font-bold text-sm">{f.label}</span>
               </motion.div>
             ))}
           </div>
@@ -184,21 +204,21 @@ const Login: React.FC = () => {
           className="w-full max-w-md"
         >
           {/* Card */}
-          <div className="bg-slate-900/80 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-slate-800/80 shadow-2xl shadow-black/40 relative overflow-hidden">
+          <div className="bg-surface/80 dark:bg-slate-900/80 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-border-subtle dark:border-slate-800/80 shadow-2xl shadow-black/5 relative overflow-hidden">
             {/* Decorative corner glow */}
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-brand-600/20 rounded-full blur-3xl" />
-            <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-brand-600/20 rounded-full blur-3xl opacity-50" />
+            <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl opacity-50" />
 
             <div className="relative z-10 space-y-8">
               {/* Mobile logo */}
               <div className="lg:hidden flex items-center justify-center gap-3 mb-4">
                 <img src="/logo.png" alt="Synapse" className="w-12 h-12 rounded-2xl shadow-xl shadow-brand-500/20" />
-                <span className="text-2xl font-black text-white font-logo">Synapse</span>
+                <span className="text-2xl font-black text-text-primary font-logo">Synapse</span>
               </div>
 
               <div className="text-center space-y-2">
-                <h1 className="text-3xl font-black text-white tracking-tight">Welcome back</h1>
-                <p className="text-gray-400 font-medium">Sign in to continue your learning journey</p>
+                <h1 className="text-3xl font-black text-text-primary tracking-tight">Welcome back</h1>
+                <p className="text-text-secondary font-medium">Sign in to continue your learning journey</p>
               </div>
 
               {/* Auth buttons */}
@@ -207,7 +227,7 @@ const Login: React.FC = () => {
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => login()}
-                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-white rounded-2xl font-bold text-gray-800 shadow-lg hover:shadow-xl transition-all"
+                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-white border border-border-muted rounded-2xl font-bold text-gray-800 shadow-md hover:shadow-lg transition-all"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -219,16 +239,16 @@ const Login: React.FC = () => {
                 </motion.button>
 
                 <div className="flex items-center gap-4">
-                  <div className="h-px flex-1 bg-slate-800" />
-                  <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">or</span>
-                  <div className="h-px flex-1 bg-slate-800" />
+                  <div className="h-px flex-1 bg-border-subtle" />
+                  <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">or</span>
+                  <div className="h-px flex-1 bg-border-subtle" />
                 </div>
 
                 <motion.button
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleCredentialResponse({ credential: null })}
-                  className="group w-full flex items-center justify-center gap-3 py-4 px-6 bg-gradient-to-r from-brand-600 to-violet-600 text-white rounded-2xl font-bold shadow-xl shadow-brand-600/25 hover:shadow-brand-600/40 transition-all"
+                  className="group w-full flex items-center justify-center gap-3 py-4 px-6 bg-gradient-to-r from-brand-600 to-violet-600 text-white rounded-2xl font-bold shadow-xl shadow-brand-600/15 hover:shadow-brand-600/30 transition-all"
                 >
                   <UserIcon size={18} />
                   Continue as Guest
@@ -237,9 +257,9 @@ const Login: React.FC = () => {
               </div>
 
               {/* Note */}
-              <div className="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50">
-                <p className="text-[11px] text-gray-400 leading-relaxed text-center">
-                  Use <span className="text-white font-bold">Guest Access</span> to explore all features instantly — no account needed.
+              <div className="p-4 bg-surface rounded-2xl border border-border-subtle shadow-inner">
+                <p className="text-[11px] text-text-secondary leading-relaxed text-center">
+                  Use <span className="text-text-primary font-bold">Guest Access</span> to explore all features instantly — no account needed.
                 </p>
               </div>
             </div>
@@ -257,7 +277,7 @@ const Login: React.FC = () => {
               { icon: Sparkles, label: 'AI Powered' },
               { icon: Zap, label: 'Instant' },
             ].map((b, i) => (
-              <div key={i} className="flex items-center gap-2 text-gray-500">
+              <div key={i} className="flex items-center gap-2 text-text-muted">
                 <b.icon size={14} />
                 <span className="text-[10px] font-bold uppercase tracking-wider">{b.label}</span>
               </div>

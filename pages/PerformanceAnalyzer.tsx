@@ -109,7 +109,7 @@ const PerformanceAnalyzer: React.FC = () => {
   const getBarColor = (pct: number) => pct >= 80 ? '#22c55e' : pct >= 60 ? '#eab308' : pct >= 40 ? '#f97316' : '#ef4444';
 
   return (
-    <div className="p-6 md:p-10 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <div className="p-6 md:p-10 xl:px-12 w-full max-w-[1600px] mx-auto space-y-8 animate-in fade-in duration-500">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-3">
@@ -117,31 +117,42 @@ const PerformanceAnalyzer: React.FC = () => {
           </h1>
           <p className="text-gray-500 dark:text-gray-400 font-medium mt-1">Analyze IA drops and generate a personalized study plan.</p>
         </div>
-        <button onClick={() => setShowHistory(!showHistory)} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-xl text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-          <History size={16} /> Past Reports
-        </button>
+        <div className="flex items-center gap-3 md:pr-24">
+          <button onClick={() => setShowHistory(!showHistory)} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-xl text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
+            <History size={16} /> Past Reports
+          </button>
+        </div>
       </header>
-
-      {showHistory && history.length > 0 && (
+ 
+      {showHistory && (
         <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl p-6 animate-in slide-in-from-top-4 duration-300">
           <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-4">History</h3>
-          <div className="space-y-3 max-h-60 overflow-y-auto">
-            {history.map(h => (
-              <div key={h.id} className="flex justify-between items-center p-4 bg-gray-50 dark:bg-slate-800 rounded-2xl">
-                <div>
-                  <p className="font-bold dark:text-white">{h.examName}</p>
-                  <p className="text-xs text-gray-400">{h.subjects.length} subjects • {new Date(h.createdAt).toLocaleDateString()}</p>
+          {history.length > 0 ? (
+            <div className="space-y-3 max-h-60 overflow-y-auto">
+              {history.map(h => (
+                <div key={h.id} className="flex justify-between items-center p-4 bg-gray-50 dark:bg-slate-800 rounded-2xl">
+                  <div>
+                    <p className="font-bold dark:text-white">{h.examName}</p>
+                    <p className="text-xs text-gray-400">{h.subjects.length} subjects • {new Date(h.createdAt).toLocaleDateString()}</p>
+                  </div>
+                  <div className={`text-lg font-black ${h.overallPercent >= 70 ? 'text-green-500' : h.overallPercent >= 50 ? 'text-yellow-500' : 'text-red-500'}`}>
+                    {h.overallPercent}%
+                  </div>
                 </div>
-                <div className={`text-lg font-black ${h.overallPercent >= 70 ? 'text-green-500' : h.overallPercent >= 50 ? 'text-yellow-500' : 'text-red-500'}`}>
-                  {h.overallPercent}%
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-400 py-4 text-sm font-medium">No past reports found yet.</p>
+          )}
         </div>
       )}
+<<<<<<< HEAD
 
       <div className="grid xl:grid-cols-12 gap-8">
+=======
+ 
+      <div className="grid lg:grid-cols-12 gap-8">
+>>>>>>> 040947332b67bd8351399d24b1e36b792692d987
         {/* LEFT: Input */}
         <div className="xl:col-span-5 space-y-6">
           <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 p-8 shadow-sm space-y-6">

@@ -36,7 +36,7 @@ interface StudyScheduleResult {
   advice: string;
 }
 
-const Timetable: React.FC = () => {
+const StudyPlanner: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as { subject?: string; date?: string } || {};
@@ -112,7 +112,7 @@ const Timetable: React.FC = () => {
 
         <header className="space-y-2">
           <h1 className="text-4xl font-black tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
-            Timetable <span className="text-brand-600 dark:text-brand-400">Generator</span> <Sparkles className="text-brand-500" />
+            Study <span className="text-brand-600 dark:text-brand-400">Architect</span> <Sparkles className="text-brand-500" />
           </h1>
         </header>
 
@@ -330,4 +330,4 @@ const Timetable: React.FC = () => {
   );
 };
 
-export default Timetable;
+export default StudyPlanner;

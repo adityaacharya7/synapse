@@ -2,9 +2,59 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
+  :root {
+    /* Backgrounds */
+    --bg-base: #f8fafc; /* slate-50 */
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f1f5f9; /* slate-100 */
+    --bg-surface-focus: #e2e8f0; /* slate-200 */
+
+    /* Text */
+    --text-primary: #0f172a; /* slate-900 */
+    --text-secondary: #475569; /* slate-600 */
+    --text-muted: #94a3b8; /* slate-400 */
+
+    /* Borders */
+    --border-subtle: #e2e8f0; /* slate-200 */
+    --border-divider: #cbd5e1; /* slate-300 */
+  }
+
+  .dark {
+    /* Backgrounds */
+    --bg-base: #020617; /* slate-950 */
+    --bg-surface: #0f172a; /* slate-900 */
+    --bg-surface-hover: #1e293b; /* slate-800 */
+    --bg-surface-focus: #334155; /* slate-700 */
+
+    /* Text */
+    --text-primary: #f8fafc; /* slate-50 */
+    --text-secondary: #94a3b8; /* slate-400 */
+    --text-muted: #64748b; /* slate-500 */
+
+    /* Borders */
+    --border-subtle: #1e293b; /* slate-800 */
+    --border-divider: #334155; /* slate-700 */
+  }
+}
+
 /* ── Custom Theme ── */
 @theme {
   --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  /* Semantic Theme Variables */
+  --color-bg-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-surface-hover: var(--bg-surface-hover);
+  --color-surface-focus: var(--bg-surface-focus);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-divider: var(--border-divider);
+
 
   /* Brand color palette (violet-indigo) */
   --color-brand-50: #f5f3ff;
@@ -34,7 +84,9 @@
 /* ── Base Styles ── */
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
-  transition: background-color 0.3s, color 0.3s;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .dark {
@@ -165,8 +217,14 @@ body {
   background-size: 28px 28px;
 }
 
-/* AI message bubble — purple-tinted for better contrast */
+/* AI message bubble — dynamic dual-theme */
 .chat-ai-bubble {
+  background: linear-gradient(135deg, rgba(245,243,255,1) 0%, rgba(237,233,254,1) 100%);
+  border: 1px solid rgba(139,92,246,0.2);
+  color: #4c1d95;
+}
+
+.dark .chat-ai-bubble {
   background: linear-gradient(135deg, rgba(30,27,50,1) 0%, rgba(20,18,40,1) 100%);
   border: 1px solid rgba(139,92,246,0.12);
   color: #e2e0ea;
@@ -175,15 +233,6 @@ body {
 /* Glow ring around AI avatar */
 .ai-avatar-ring {
   box-shadow: 0 0 0 2px rgba(139,92,246,0.25), 0 0 12px rgba(139,92,246,0.15);
-}
-
-/* Glassmorphic chat header */
-.chat-header-glass {
-  background: rgba(2,6,23,0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(139,92,246,0.08);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
 }
 
 /* Typing indicator dots */

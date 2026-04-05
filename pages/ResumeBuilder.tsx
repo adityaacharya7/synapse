@@ -169,7 +169,7 @@ const ResumeBuilder: React.FC = () => {
   ] : [];
 
   return (
-    <div className="p-4 md:p-8 max-w-[95rem] mx-auto space-y-6 animate-in fade-in duration-700 relative">
+    <div className="p-4 md:p-8 xl:px-12 w-full max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-700 relative">
 
       {/* Header */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b dark:border-slate-800">
@@ -181,7 +181,7 @@ const ResumeBuilder: React.FC = () => {
             Upload, Analyze, and Chat with your Resume to beat the ATS.
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 md:pr-32">
           <button
             onClick={runFullAnalysis}
             disabled={loading}

@@ -28,6 +28,7 @@ export interface QuestProgress {
   lastDailyRefresh?: string; // ISO String of last refresh date
   level: string;
   xp: number;
+  cumulativeXp?: number; // Total points earned across all activities
   userLevel: number; // The gamified level (1-10)
   completedDailies: string[]; // List of IDs
   questData: QuestData;
@@ -52,12 +53,19 @@ export interface UserProfile {
   };
 }
 
+export interface Resource {
+  title: string;
+  link: string;
+  type: string;
+}
+
 export interface RoadmapNode {
   id: string;
   label: string;
   order: number;
   mandatory: boolean;
   description?: string; // Optional field for UI richness
+  resources?: Resource[];
 }
 
 export interface RoadmapSection {
@@ -160,6 +168,7 @@ export interface QuizQuestion {
   options: string[];
   correct: number;
   explanation: string;
+  category: string; // Sub-topic for analytics
 }
 
 export interface QuizSession {
@@ -170,6 +179,11 @@ export interface QuizSession {
   score: number;
   total: number;
   createdAt: string;
+  timeTaken: number; // Total time in seconds
+  xpGained: number; // XP earned in this session
+  accuracy: number; // Score/Total * 100
+  badges: string[]; // Badges earned in this session
+  userAnswers: (number | null)[]; // To track which questions were missed for weak topic detection
 }
 
 // ── Performance Analyzer ──

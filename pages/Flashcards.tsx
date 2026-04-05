@@ -112,18 +112,18 @@ const Flashcards = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-[#020617] text-slate-100 font-sans">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <div className="min-h-screen p-8 bg-bg-base text-text-primary font-sans transition-colors duration-300">
+      <div className="max-w-[1600px] mx-auto space-y-12">
         
         {/* Header */}
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-brand-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-          <div className="relative flex items-center justify-between bg-slate-900/50 backdrop-blur-xl border border-slate-800 p-8 rounded-2xl">
+          <div className="relative flex items-center justify-between bg-surface/80 backdrop-blur-xl border border-border-subtle p-8 rounded-2xl">
             <div className="space-y-2">
-              <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-brand-600 to-indigo-500 bg-clip-text text-transparent dark:from-white dark:to-slate-400">
                 Flashcard Decks
               </h1>
-              <p className="text-slate-400 font-medium">Smart AI Generation • Spaced Repetition Mastery</p>
+              <p className="text-text-secondary font-medium">Smart AI Generation • Spaced Repetition Mastery</p>
             </div>
             <div className="flex items-center gap-4">
                <div className="h-12 w-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400 border border-brand-500/20 shadow-2xl">
@@ -138,7 +138,7 @@ const Flashcards = () => {
             
             {/* Generate Section */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-6 space-y-6 sticky top-8">
+              <div className="bg-surface/80 border border-border-subtle rounded-3xl p-6 space-y-6 sticky top-8">
                 <div className="flex items-center gap-3">
                   <Sparkles className="text-brand-400" size={20} />
                   <h2 className="text-xl font-bold">New AI Deck</h2>
@@ -146,21 +146,21 @@ const Flashcards = () => {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest pl-1">Topic</label>
+                    <label className="text-xs font-black text-text-muted uppercase tracking-widest pl-1">Topic</label>
                     <input 
                       type="text" 
                       placeholder="e.g. Quantum Physics, React Hooks..."
-                      className="w-full mt-2 bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all text-sm font-medium"
+                      className="w-full mt-2 bg-text-primary/5 dark:bg-slate-950/50 border border-border-subtle rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all text-sm font-medium"
                       value={newDeckTopic}
                       onChange={(e) => setNewDeckTopic(e.target.value)}
                     />
                   </div>
                   
                   <div>
-                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest pl-1">Study Material (Optional)</label>
+                    <label className="text-xs font-black text-text-muted uppercase tracking-widest pl-1">Study Material (Optional)</label>
                     <textarea 
                       placeholder="Paste your notes here for custom cards..."
-                      className="w-full mt-2 bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all text-sm font-medium h-32 resize-none"
+                      className="w-full mt-2 bg-text-primary/5 dark:bg-slate-950/50 border border-border-subtle rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all text-sm font-medium h-32 resize-none"
                       value={notesText}
                       onChange={(e) => setNotesText(e.target.value)}
                     />
@@ -169,7 +169,7 @@ const Flashcards = () => {
                   <button 
                     onClick={handleGenerateDeck}
                     disabled={isGenerating || !newDeckTopic.trim()}
-                    className="w-full bg-gradient-to-r from-brand-600 to-indigo-600 py-4 rounded-xl font-bold text-sm shadow-lg shadow-brand-900/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:grayscale"
+                    className="w-full bg-gradient-to-r from-brand-600 to-indigo-600 py-4 rounded-xl font-bold text-sm shadow-lg shadow-brand-900/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:grayscale text-white"
                   >
                     {isGenerating ? (
                       <>
@@ -192,10 +192,10 @@ const Flashcards = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {decks.length === 0 && !isGenerating && (
                   <div className="md:col-span-2 py-24 text-center space-y-4">
-                    <div className="w-20 h-20 rounded-3xl bg-slate-900 flex items-center justify-center mx-auto text-slate-700">
+                    <div className="w-20 h-20 rounded-3xl bg-surface flex items-center justify-center mx-auto text-text-muted border border-border-subtle">
                       <BookOpen size={40} />
                     </div>
-                    <p className="text-slate-500 font-medium tracking-tight">No decks yet. Use AI to build your first one!</p>
+                    <p className="text-text-secondary font-medium tracking-tight">No decks yet. Use AI to build your first one!</p>
                   </div>
                 )}
                 
@@ -208,10 +208,10 @@ const Flashcards = () => {
                       key={deck.id}
                       layoutId={deck.id}
                       onClick={() => startReview(deck)}
-                      className="group cursor-pointer bg-slate-900/30 border border-slate-800 rounded-3xl p-6 hover:bg-slate-900/60 hover:border-brand-500/30 transition-all relative overflow-hidden"
+                      className="group cursor-pointer bg-surface/80 border border-border-subtle rounded-3xl p-6 hover:bg-surface-hover hover:border-brand-500/30 transition-all relative overflow-hidden"
                     >
                       <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                         <button onClick={(e) => deleteDeck(deck.id, e)} className="p-2 text-slate-500 hover:text-red-400 transition-colors">
+                         <button onClick={(e) => deleteDeck(deck.id, e)} className="p-2 text-text-muted hover:text-red-500 transition-colors">
                             <Trash2 size={16} />
                          </button>
                       </div>
@@ -219,8 +219,8 @@ const Flashcards = () => {
                       <div className="space-y-6">
                         <div className="flex items-start justify-between">
                           <div className="space-y-1">
-                            <h3 className="font-bold text-lg group-hover:text-brand-400 transition-colors">{deck.title}</h3>
-                            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-widest">
+                            <h3 className="font-bold text-lg text-text-primary group-hover:text-brand-500 transition-colors">{deck.title}</h3>
+                            <div className="flex items-center gap-2 text-text-muted text-xs font-bold uppercase tracking-widest">
                                <BookOpen size={12} />
                                {deck.cards.length} Cards
                             </div>
@@ -229,24 +229,24 @@ const Flashcards = () => {
 
                         <div className="flex items-center gap-3">
                            {dueCount > 0 ? (
-                             <div className="px-3 py-1.5 bg-brand-500/10 text-brand-400 text-[10px] font-black rounded-lg border border-brand-500/20 flex items-center gap-2 animate-pulse">
+                             <div className="px-3 py-1.5 bg-brand-500/10 text-brand-600 dark:text-brand-400 text-[10px] font-black rounded-lg border border-brand-500/20 flex items-center gap-2 animate-pulse">
                                 <Clock size={12} />
                                 {dueCount} DUE NOW
                              </div>
                            ) : (
-                              <div className="px-3 py-1.5 bg-slate-800/50 text-slate-500 text-[10px] font-black rounded-lg flex items-center gap-2">
+                              <div className="px-3 py-1.5 bg-text-primary/10 text-text-muted text-[10px] font-black rounded-lg flex items-center gap-2">
                                 <CheckCircle2 size={12} />
                                 ALL CAUGHT UP
                               </div>
                            )}
                            <div className="flex-1" />
-                           <div className="p-2 rounded-full border border-slate-800 bg-slate-950 text-slate-400 group-hover:text-brand-400 group-hover:border-brand-500/30 transition-all">
+                           <div className="p-2 rounded-full border border-border-subtle bg-bg-base text-text-muted group-hover:text-brand-500 group-hover:border-brand-500/30 transition-all">
                               <ChevronRight size={16} />
                            </div>
                         </div>
 
                         {/* Progress Bar */}
-                        <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+                        <div className="h-1.5 w-full bg-text-primary/10 rounded-full overflow-hidden">
                            <div 
                               className="h-full bg-gradient-to-r from-brand-600 to-indigo-500"
                               style={{ width: `${(deck.cards.filter(c => c.interval > 0).length / deck.cards.length) * 100}%` }}
@@ -266,18 +266,18 @@ const Flashcards = () => {
             <div className="flex items-center justify-between">
                <button 
                   onClick={() => setActiveDeck(null)}
-                  className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors font-bold text-sm"
+                  className="flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors font-bold text-sm"
                >
                   <ChevronLeft size={20} /> Exit Review
                </button>
                
                <div className="flex flex-col items-center">
-                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mb-2">Session Progress</span>
-                  <div className="flex gap-1 h-1.5 w-48 bg-slate-900 rounded-full overflow-hidden">
+                  <span className="text-[10px] font-black text-text-muted uppercase tracking-widest leading-none mb-2">Session Progress</span>
+                  <div className="flex gap-1 h-1.5 w-48 bg-text-primary/10 rounded-full overflow-hidden">
                     {reviewCards.map((_, i) => (
                       <div 
                         key={i} 
-                        className={`h-full transition-all duration-500 ${i < currentCardIndex ? 'bg-brand-500' : i === currentCardIndex ? 'bg-brand-500 animate-pulse' : 'bg-slate-800'}`}
+                        className={`h-full transition-all duration-500 ${i < currentCardIndex ? 'bg-brand-500' : i === currentCardIndex ? 'bg-brand-500 animate-pulse' : 'bg-transparent'}`}
                         style={{ width: `${100 / reviewCards.length}%` }}
                       />
                     ))}
@@ -303,27 +303,27 @@ const Flashcards = () => {
                       transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
                       className={`absolute inset-0 rounded-[40px] border p-12 flex flex-col items-center justify-center text-center shadow-2xl backdrop-blur-xl ${
                         isFlipped 
-                          ? 'bg-gradient-to-br from-indigo-950/80 to-slate-900/80 border-indigo-500/20' 
-                          : 'bg-gradient-to-br from-slate-900/80 to-slate-800/80 border-slate-700/50'
+                          ? 'bg-surface border-indigo-500/30' 
+                          : 'bg-surface border-border-subtle'
                       }`}
                     >
-                      <div className="absolute top-8 left-12 flex items-center gap-2 text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                         {isFlipped ? <Sparkles size={12} className="text-brand-400" /> : <Brain size={12} className="text-slate-400" />}
+                      <div className="absolute top-8 left-12 flex items-center gap-2 text-text-muted text-[10px] font-black uppercase tracking-[0.2em]">
+                         {isFlipped ? <Sparkles size={12} className="text-brand-500" /> : <Brain size={12} className="text-text-muted" />}
                          {isFlipped ? 'Response' : 'Question'}
                       </div>
 
                       <div className="space-y-6 max-w-2xl">
-                         <h2 className={`font-bold leading-tight ${isFlipped ? 'text-3xl text-slate-100' : 'text-4xl text-white'}`}>
+                         <h2 className={`font-bold leading-tight ${isFlipped ? 'text-3xl text-text-primary' : 'text-4xl text-text-primary'}`}>
                            {isFlipped ? reviewCards[currentCardIndex].back : reviewCards[currentCardIndex].front}
                          </h2>
                          {isFlipped && reviewCards[currentCardIndex].explanation && (
-                            <p className="text-slate-400 text-lg font-medium leading-relaxed italic">
+                            <p className="text-text-secondary text-lg font-medium leading-relaxed italic">
                               "{reviewCards[currentCardIndex].explanation}"
                             </p>
                          )}
                       </div>
 
-                      <div className="absolute bottom-8 text-[10px] font-black text-slate-600 uppercase tracking-widest flex items-center gap-2">
+                      <div className="absolute bottom-8 text-[10px] font-black text-text-muted uppercase tracking-widest flex items-center gap-2">
                          <RotateCcw size={12} /> Click Card to Flip
                       </div>
                     </motion.div>
@@ -333,34 +333,34 @@ const Flashcards = () => {
                 {/* SRS Controls */}
                 <div className="flex justify-center items-center gap-4">
                   {isFlipped ? (
-                    <div className="flex gap-4 p-2 bg-slate-900/50 border border-slate-800 rounded-[30px] backdrop-blur-xl">
+                    <div className="flex gap-4 p-2 bg-surface/50 border border-border-subtle rounded-[30px] backdrop-blur-xl">
                        <button 
                         onClick={() => handleSRSResponse(0)}
-                        className="px-8 py-4 rounded-2xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold text-sm transition-all border border-red-500/20"
+                        className="px-8 py-4 rounded-2xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-bold text-sm transition-all border border-red-500/20"
                        >
                          Again
                        </button>
                        <button 
                         onClick={() => handleSRSResponse(1)}
-                        className="px-8 py-4 rounded-2xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 font-bold text-sm transition-all border border-orange-500/20"
+                        className="px-8 py-4 rounded-2xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 font-bold text-sm transition-all border border-orange-500/20"
                        >
                          Hard
                        </button>
                        <button 
                         onClick={() => handleSRSResponse(3)}
-                        className="px-8 py-4 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-400 font-bold text-sm transition-all border border-brand-500/20"
+                        className="px-8 py-4 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 font-bold text-sm transition-all border border-brand-500/20"
                        >
                          Good
                        </button>
                        <button 
                         onClick={() => handleSRSResponse(5)}
-                        className="px-8 py-4 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-bold text-sm transition-all border border-emerald-500/20"
+                        className="px-8 py-4 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-sm transition-all border border-emerald-500/20"
                        >
                          Easy
                        </button>
                     </div>
                   ) : (
-                    <div className="h-[74px] flex items-center text-slate-500 font-bold text-sm tracking-tight animate-pulse">
+                    <div className="h-[74px] flex items-center text-text-muted font-bold text-sm tracking-tight animate-pulse">
                       Recall the answer, then flip to score your performance
                     </div>
                   )}
@@ -381,25 +381,25 @@ const Flashcards = () => {
                  </div>
                  
                  <div className="space-y-2">
-                    <h2 className="text-4xl font-black">Memory Cycle Complete!</h2>
-                    <p className="text-slate-400 text-lg font-medium max-w-sm">You've strengthened your neural connections for "{activeDeck.title}".</p>
+                    <h2 className="text-4xl font-black text-text-primary">Memory Cycle Complete!</h2>
+                    <p className="text-text-secondary text-lg font-medium max-w-sm">You've strengthened your neural connections for "{activeDeck.title}".</p>
                  </div>
 
                  <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-                    <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-3xl text-center">
-                       <p className="text-3xl font-black text-white">{reviewCards.length}</p>
-                       <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Cards Mastered</p>
+                    <div className="bg-surface border border-border-subtle p-6 rounded-3xl text-center">
+                       <p className="text-3xl font-black text-text-primary">{reviewCards.length}</p>
+                       <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mt-1">Cards Mastered</p>
                     </div>
-                    <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-3xl text-center">
-                       <p className="text-3xl font-black text-brand-400">+{reviewCards.length * 10}XP</p>
-                       <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Bonus Earned</p>
+                    <div className="bg-surface border border-border-subtle p-6 rounded-3xl text-center">
+                       <p className="text-3xl font-black text-brand-600 dark:text-brand-400">+{reviewCards.length * 10}XP</p>
+                       <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mt-1">Bonus Earned</p>
                     </div>
                  </div>
 
                  <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md justify-center">
                    <button 
                     onClick={() => setActiveDeck(null)}
-                    className="px-8 py-4 bg-white text-brand-950 font-black rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl shadow-white/5 whitespace-nowrap"
+                    className="px-8 py-4 bg-text-primary text-bg-base font-black rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl shadow-text-primary/10 whitespace-nowrap"
                    >
                       CONTINUE STUDYING
                    </button>

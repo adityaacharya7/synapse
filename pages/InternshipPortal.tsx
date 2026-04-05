@@ -161,7 +161,7 @@ const InternshipPortal: React.FC = () => {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-24">
+    <div className="p-8 xl:px-12 w-full max-w-[1600px] mx-auto space-y-8 animate-in fade-in duration-500 pb-24">
 
       {/* Header */}
       <header className="flex flex-col md:flex-row justify-between items-end gap-6 border-b dark:border-slate-800 pb-8">

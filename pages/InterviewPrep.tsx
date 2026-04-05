@@ -132,7 +132,7 @@ const InterviewPrep: React.FC = () => {
 
   if (phase === 'input') {
     return (
-      <div className="max-w-4xl mx-auto p-8">
+      <div className="w-full max-w-[1600px] mx-auto p-8 xl:px-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">Interview Prep</h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">Practice with AI-generated interview questions tailored to your target role.</p>
@@ -210,7 +210,7 @@ const InterviewPrep: React.FC = () => {
 
   if (phase === 'loading') {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center max-w-4xl mx-auto p-8 text-center">
+      <div className="min-h-[70vh] flex flex-col items-center justify-center w-full max-w-[1600px] mx-auto p-8 xl:px-12 text-center">
         <Loader2 className="w-12 h-12 text-brand-600 animate-spin mb-6" />
         <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-3">Generating Interview Questions</h2>
         <p className="text-gray-500 dark:text-gray-400">Preparing personalized questions for {role}...</p>
@@ -221,8 +221,8 @@ const InterviewPrep: React.FC = () => {
   if (phase === 'taking') {
     const currentQuestion = questions[currentQ];
     return (
-      <div className="min-h-screen bg-[#0b111e] -mt-20 pt-32 pb-20 px-8 lg:px-12">
-        <div className="max-w-3xl mx-auto">
+      <div className="min-h-screen bg-[#0b111e] -mt-20 pt-32 pb-20 px-8 lg:px-12 xl:px-24">
+        <div className="w-full max-w-[1600px] mx-auto">
           <div className="bg-[#1a2233] rounded-[2rem] p-12 shadow-2xl border border-slate-800/50">
             <div className="mb-8 flex justify-between items-center">
               <span className="text-sm font-semibold text-[#8b949e]">Question {currentQ + 1} of {questions.length}</span>
@@ -315,7 +315,7 @@ const InterviewPrep: React.FC = () => {
   if (phase === 'results') {
     const overallScore = responses.length > 0 ? responses.reduce((s, r) => s + r.score, 0) / responses.length : 0;
     return (
-      <div className="max-w-4xl mx-auto p-8 text-center">
+      <div className="w-full max-w-[1600px] mx-auto p-8 xl:px-12 text-center">
         <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-6" />
         <h1 className="text-6xl font-black mb-6">Evaluation Report</h1>
         <div className="flex justify-center gap-12 mb-12">

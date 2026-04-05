@@ -40,7 +40,7 @@ const AdminPanel: React.FC = () => {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-8 xl:px-12 w-full max-w-[1600px] mx-auto">
       <header className="mb-10 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Placement Cell Dashboard</h1>
