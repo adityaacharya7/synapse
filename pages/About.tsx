@@ -1,21 +1,21 @@
 import React, { useRef } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Github, 
-  Linkedin, 
-  Mail, 
-  Code2, 
-  Palette, 
-  BrainCircuit, 
-  Sparkles, 
-  FileSearch, 
-  Layers, 
-  Clock, 
-  Target, 
-  Map as MapIcon, 
-  Youtube, 
+import {
+  ArrowLeft,
+  Github,
+  Linkedin,
+  Mail,
+  Code2,
+  Palette,
+  BrainCircuit,
+  Sparkles,
+  FileSearch,
+  Layers,
+  Clock,
+  Target,
+  Map as MapIcon,
+  Youtube,
   BarChart3,
   MessageSquare
 } from 'lucide-react';
@@ -54,42 +54,42 @@ const teamMembers = [
   },
   {
     name: "Aditya Vijaykumar",
-    role: "AI Systems Engineer",
+    role: "Feature Developer",
     contribution: "Created an AI-powered timetable generator tailored to user goals and deadlines.",
     icon: <Clock className="w-6 h-6" />,
     color: "from-green-500 to-emerald-500"
   },
   {
     name: "Tanisha Balekar",
-    role: "AI Developer",
+    role: "Feature Developer",
     contribution: "Designed the AI Quiz Maker with adaptive difficulty based on uploaded content.",
     icon: <BrainCircuit className="w-6 h-6" />,
     color: "from-indigo-500 to-blue-500"
   },
   {
     name: "Mandar Awatade",
-    role: "Roadmap Architect",
+    role: "Feature Developer",
     contribution: "Built the Skill Roadmap feature to guide users through structured learning paths.",
     icon: <MapIcon className="w-6 h-6" />,
     color: "from-cyan-500 to-blue-600"
   },
   {
     name: "Chinamy Santosh",
-    role: "Media Systems Developer",
+    role: "Feature Developer",
     contribution: "Developed the YouTube video transcriber to generate notes from video links.",
     icon: <Youtube className="w-6 h-6" />,
     color: "from-red-600 to-rose-500"
   },
   {
     name: "Bharat Sirmal",
-    role: "Feedback Systems Engineer",
+    role: "Feature Developer",
     contribution: "Enhanced the Interview Preparation feature by integrating a feedback system.",
     icon: <Target className="w-6 h-6" />,
     color: "from-emerald-600 to-teal-500"
   },
   {
     name: "Arpit Bolade",
-    role: "Analytics Lead",
+    role: "Feature Developer",
     contribution: "Created a Performance Analyzer to evaluate student performance and suggest improvements.",
     icon: <BarChart3 className="w-6 h-6" />,
     color: "from-violet-600 to-purple-600"
@@ -113,20 +113,20 @@ const About: React.FC = () => {
 
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+    visible: {
+      opacity: 1,
+      y: 0,
       scale: 1,
-      transition: { 
-        duration: 0.6, 
-        ease: [0.215, 0.61, 0.355, 1] 
+      transition: {
+        duration: 0.6,
+        ease: [0.215, 0.61, 0.355, 1]
       }
     }
   };
 
   return (
     <div className="relative min-h-screen bg-bg-base overflow-x-hidden font-sans">
-      
+
       {/* Background Effect */}
       <div className="absolute inset-0 z-0">
         <Ballpit
@@ -141,7 +141,7 @@ const About: React.FC = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-12">
-        
+
         {/* Navigation */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -149,8 +149,8 @@ const About: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-surface/40 backdrop-blur-md border border-border-subtle text-text-primary hover:border-brand-500/50 transition-all duration-300 group"
           >
             <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
@@ -169,7 +169,7 @@ const About: React.FC = () => {
               <Sparkles size={14} className="animate-pulse" />
               <span className="text-xs font-bold uppercase tracking-widest">Our Mission</span>
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-black text-text-primary mb-6 tracking-tighter cursor-default">
               <VariableProximity
                 label="Meet the Visionaries"
@@ -186,14 +186,14 @@ const About: React.FC = () => {
             </h1>
 
             <p className="text-lg md:text-xl text-text-secondary font-medium leading-relaxed max-w-2xl">
-              Synapse was born from a collective dream to redefine academic success through the power of Artificial Intelligence. 
+              Synapse was born from a collective dream to redefine academic success through the power of Artificial Intelligence.
               Meet the talented individuals who turned this vision into reality.
             </p>
           </motion.div>
         </div>
 
         {/* Team Grid */}
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -207,9 +207,9 @@ const About: React.FC = () => {
               className="group relative"
             >
               <div className="absolute -inset-2 bg-gradient-to-br opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500 rounded-[2.5rem] -z-10 bg-brand-500/30" />
-              
+
               <div className="h-full p-6 rounded-3xl bg-surface/40 backdrop-blur-xl border border-border-subtle hover:border-brand-500/30 transition-all duration-300 flex flex-col shadow-xl shadow-black/5">
-                
+
                 {/* Member Icon */}
                 <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${member.color} flex items-center justify-center text-white mb-4 shadow-lg shadow-brand-500/20 group-hover:rotate-6 transition-transform duration-300`}>
                   {member.icon}
@@ -230,7 +230,7 @@ const About: React.FC = () => {
                 {/* Social Placeholder */}
                 <div className="mt-6 flex items-center gap-3 border-t border-border-subtle pt-5">
                   {[Github, Linkedin, Mail].map((Icon, i) => (
-                    <button 
+                    <button
                       key={i}
                       className="w-10 h-10 rounded-xl bg-bg-base/50 flex items-center justify-center text-text-muted hover:text-brand-500 hover:bg-brand-500/10 transition-all duration-300"
                     >
@@ -253,7 +253,7 @@ const About: React.FC = () => {
         >
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-400/20 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
-          
+
           <div className="relative z-10 text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-black mb-6 tracking-tight">
               Ready to elevate your learning?

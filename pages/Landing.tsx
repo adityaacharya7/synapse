@@ -64,7 +64,7 @@ const Landing: React.FC = () => {
         className="z-[70]"
         items={[
           { label: 'ABOUT', link: '#/about', ariaLabel: 'About us' },
-          { label: 'Contact', link: '#contact', ariaLabel: 'Contact us' },
+          { label: 'Contact', link: '#/contact', ariaLabel: 'Contact us' },
           { label: 'Log In', link: '#/login', ariaLabel: 'Log in to your account' }
         ]}
         socialItems={[]}

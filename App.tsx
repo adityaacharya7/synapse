@@ -31,6 +31,7 @@ import InterviewPrep from './pages/InterviewPrep';
 import Flashcards from './pages/Flashcards';
 import AllTools from './pages/AllTools';
 import About from './pages/About';
+import Contact from './pages/Contact';
 import Dock from './src/components/Dock';
 import DashboardHeader from './src/components/DashboardHeader';
 import DockOnboarding from './src/components/DockOnboarding';
@@ -58,7 +59,7 @@ const GlobalUIOverlays = ({ isInitialLoading }: { isInitialLoading?: boolean }) 
   const navigate = useNavigate();
 
   // Hide Dock and TopNav while loading or on auth/marketing pages
-  if (isInitialLoading || ['/', '/login', '/profile-setup', '/about'].includes(location.pathname)) return null;
+  if (isInitialLoading || ['/', '/login', '/profile-setup', '/about', '/contact'].includes(location.pathname)) return null;
 
   const dockItems = [
     { label: 'Dashboard', icon: <Layout size={20} className="text-sky-500 dark:text-sky-400" />, className: "hover:shadow-[0_0_15px_rgba(14,165,233,0.3)] dark:hover:shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:border-sky-500/30 transition-shadow transition-colors", onClick: () => navigate('/dashboard') },
@@ -110,7 +111,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
 const MainContent = () => {
   const location = useLocation();
-  const isMarketingPage = ['/', '/login', '/profile-setup', '/about'].includes(location.pathname);
+  const isMarketingPage = ['/', '/login', '/profile-setup', '/about', '/contact'].includes(location.pathname);
 
   return (
     <main
@@ -139,6 +140,7 @@ const MainContent = () => {
         <Route path="/flashcards" element={<ProtectedRoute><Flashcards /></ProtectedRoute>} />
         <Route path="/tools" element={<ProtectedRoute><AllTools /></ProtectedRoute>} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
       </Routes>
     </main>
