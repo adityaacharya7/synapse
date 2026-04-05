@@ -86,7 +86,7 @@ const GlobalUIOverlays = ({ isInitialLoading }: { isInitialLoading?: boolean }) 
             panelHeight={76}
             baseItemSize={58}
             magnification={86}
-            className="bg-white/85 dark:bg-[#020617]/85 backdrop-blur-[48px] shadow-[0_10px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_0_40px_rgba(139,92,246,0.15)] border border-black/10 dark:border-brand-500/40 rounded-[2rem] text-text-primary dark:text-white pointer-events-auto md:group-hover:shadow-[0_0_60px_rgba(139,92,246,0.3)] md:group-hover:border-brand-500/60 transition-all duration-500"
+            className="bg-white/30 dark:bg-[#0b0c10]/40 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_0_30px_rgba(139,92,246,0.15)] border border-white/30 dark:border-brand-500/20 text-text-primary dark:text-white rounded-[2rem] pointer-events-auto md:group-hover:dark:shadow-[0_0_50px_rgba(139,92,246,0.3)] md:group-hover:dark:border-brand-500/40 transition-[border-color,box-shadow,background-color] duration-500"
           />
         </div>
       </div>

@@ -76,7 +76,7 @@ function DockItem({
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
-      className={`relative inline-flex items-center justify-center rounded-full bg-white dark:bg-[#060010] border-border-subtle dark:border-neutral-700 border-2 shadow-sm dark:shadow-md text-text-primary dark:text-white ${className}`}
+      className={`relative inline-flex items-center justify-center rounded-[1.25rem] bg-white dark:bg-[#060010] border-border-subtle dark:border-neutral-700 border-2 shadow-sm dark:shadow-md text-text-primary dark:text-white ${className}`}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
@@ -150,11 +150,11 @@ export default function Dock({
   const isHovered = useMotionValue(0);
 
   const maxHeight = useMemo(() => Math.max(dockHeight, magnification + magnification / 2 + 4), [magnification]);
-  const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
-  const height = useSpring(heightRow, spring);
 
+  // We explicitly disable the parent height animation to prevent Chrome from dropping 
+  // the backdrop-filter blur on the child glass container during 60FPS recalculations.
   return (
-    <motion.div style={{ height, scrollbarWidth: 'none' }} className="mx-2 flex max-w-full items-center">
+    <motion.div style={{ height: maxHeight, scrollbarWidth: 'none' }} className="mx-2 flex max-w-full items-center">
       <motion.div
         onMouseMove={({ pageX }) => {
           isHovered.set(1);
