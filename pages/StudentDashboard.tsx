@@ -201,81 +201,80 @@ const StudentDashboard: React.FC = () => {
 
       {/* Main 12-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
+
         {/* Left Column (8 cols) */}
         <div className="lg:col-span-8 flex flex-col gap-6">
-          
+
           {/* Streak + Exams row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Study Streak */}
             <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-6 shadow-sm flex flex-col hover:border-brand-500/20 transition-colors">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-black text-text-primary flex items-center gap-2"><Flame size={18} className="text-orange-500" /> Study Streak</h3>
-            <span className="text-2xl font-black text-orange-500">{studyStreak} 🔥</span>
-          </div>
-          <div className="flex justify-between gap-2">
-            {last7.map((d, i) => (
-              <div key={i} className="flex flex-col items-center gap-1.5">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                  d.active ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-surface-hover text-text-muted'
-                }`}>
-                  {d.active ? <Flame size={14} /> : <span className="text-xs">·</span>}
-                </div>
-                <span className="text-[9px] font-bold text-text-muted uppercase">{d.label}</span>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-black text-text-primary flex items-center gap-2"><Flame size={18} className="text-orange-500" /> Study Streak</h3>
+                <span className="text-2xl font-black text-orange-500">{studyStreak} 🔥</span>
               </div>
-            ))}
-          </div>
-          <p className="text-xs text-text-muted mt-auto pt-3">Use any Synapse tool to keep your streak alive!</p>
-        </TiltCard>
-
-        {/* Upcoming Exams */}
-        <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-6 shadow-sm flex flex-col hover:border-brand-500/20 transition-colors">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-black text-text-primary flex items-center gap-2"><CalendarDays size={18} className="text-red-500" /> Upcoming Exams</h3>
-            <button onClick={() => setShowAddExam(!showAddExam)} className="p-1.5 bg-surface-hover rounded-lg text-text-muted hover:text-brand-600 transition-colors"><Plus size={14} /></button>
-          </div>
-          {showAddExam && (
-            <div className="flex gap-2 mb-3">
-              <input value={newExamSubject} onChange={e => setNewExamSubject(e.target.value)} placeholder="Subject" className="flex-1 p-2 bg-text-primary/5 rounded-lg text-xs font-bold text-text-primary outline-none border border-border-subtle focus:border-brand-400" />
-              <input type="date" value={newExamDate} onChange={e => setNewExamDate(e.target.value)} className="p-2 bg-text-primary/5 rounded-lg text-xs font-bold text-text-primary outline-none border border-border-subtle focus:border-brand-400" />
-              <button onClick={addExam} className="px-3 py-1 bg-brand-600 text-white rounded-lg text-xs font-bold">Add</button>
-            </div>
-          )}
-          {exams.length === 0 ? (
-            <div className="text-center py-6 bg-text-primary/5 rounded-2xl border border-dashed border-border-subtle">
-              <CalendarDays className="w-8 h-8 text-text-muted mx-auto mb-2" />
-              <p className="text-sm font-bold text-text-secondary mb-1">No exams tracked yet</p>
-              <p className="text-xs text-text-muted mb-4 px-4">Add your upcoming midterms and finals to get a personalized study plan.</p>
-              <button onClick={() => setShowAddExam(true)} className="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/20 px-3 py-1.5 rounded-lg hover:bg-brand-100 dark:hover:bg-brand-900/40 transition-colors inline-flex items-center gap-1">+ Add First Exam</button>
-            </div>
-          ) : (
-            <div className="space-y-2 max-h-28 overflow-y-auto pr-1 custom-scrollbar">
-              {exams.map(ex => {
-                const daysText = getDaysUntil(ex.date);
-                const urgent = daysText === 'Today!' || daysText === 'Tomorrow';
-                return (
-                  <div key={ex.id} className="flex items-center justify-between p-2.5 bg-surface-hover rounded-xl group border border-transparent hover:border-border-subtle transition-colors">
-                    <div className="flex items-center gap-3">
-                      <span className={`text-[10px] font-black px-2 py-0.5 rounded ${urgent ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' : 'bg-text-primary/5 text-text-secondary'}`}>{daysText}</span>
-                      <span className="text-sm font-bold text-text-primary">{ex.subject}</span>
+              <div className="flex justify-between gap-2">
+                {last7.map((d, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${d.active ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-surface-hover text-text-muted'
+                      }`}>
+                      {d.active ? <Flame size={14} /> : <span className="text-xs">·</span>}
                     </div>
-                    <div className="flex items-center gap-1">
-                      <button 
-                        onClick={() => navigate('/timetable', { state: { subject: ex.subject, date: ex.date } })}
-                        className="p-1.5 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/40 rounded-lg transition-all flex items-center gap-1 group/btn"
-                        title="Generate Time Table"
-                      >
-                        <Zap size={14} className="group-hover/btn:scale-110" />
-                        <span className="text-[10px] font-black uppercase tracking-wider hidden group-hover/btn:inline-block">Plan</span>
-                      </button>
-                      <button onClick={() => removeExam(ex.id)} className="p-1 text-text-muted opacity-0 group-hover:opacity-100 hover:text-red-500 transition-all"><Trash2 size={12} /></button>
-                    </div>
+                    <span className="text-[9px] font-bold text-text-muted uppercase">{d.label}</span>
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </TiltCard>
+                ))}
+              </div>
+              <p className="text-xs text-text-muted mt-auto pt-3">Use any Synapse tool to keep your streak alive!</p>
+            </TiltCard>
+
+            {/* Upcoming Exams */}
+            <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-6 shadow-sm flex flex-col hover:border-brand-500/20 transition-colors">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-black text-text-primary flex items-center gap-2"><CalendarDays size={18} className="text-red-500" /> Upcoming Exams</h3>
+                <button onClick={() => setShowAddExam(!showAddExam)} className="p-1.5 bg-surface-hover rounded-lg text-text-muted hover:text-brand-600 transition-colors"><Plus size={14} /></button>
+              </div>
+              {showAddExam && (
+                <div className="flex gap-2 mb-3">
+                  <input value={newExamSubject} onChange={e => setNewExamSubject(e.target.value)} placeholder="Subject" className="flex-1 p-2 bg-text-primary/5 rounded-lg text-xs font-bold text-text-primary outline-none border border-border-subtle focus:border-brand-400" />
+                  <input type="date" value={newExamDate} onChange={e => setNewExamDate(e.target.value)} className="p-2 bg-text-primary/5 rounded-lg text-xs font-bold text-text-primary outline-none border border-border-subtle focus:border-brand-400" />
+                  <button onClick={addExam} className="px-3 py-1 bg-brand-600 text-white rounded-lg text-xs font-bold">Add</button>
+                </div>
+              )}
+              {exams.length === 0 ? (
+                <div className="text-center py-6 bg-text-primary/5 rounded-2xl border border-dashed border-border-subtle">
+                  <CalendarDays className="w-8 h-8 text-text-muted mx-auto mb-2" />
+                  <p className="text-sm font-bold text-text-secondary mb-1">No exams tracked yet</p>
+                  <p className="text-xs text-text-muted mb-4 px-4">Add your upcoming midterms and finals to get a personalized study plan.</p>
+                  <button onClick={() => setShowAddExam(true)} className="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/20 px-3 py-1.5 rounded-lg hover:bg-brand-100 dark:hover:bg-brand-900/40 transition-colors inline-flex items-center gap-1">+ Add First Exam</button>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-28 overflow-y-auto pr-1 custom-scrollbar">
+                  {exams.map(ex => {
+                    const daysText = getDaysUntil(ex.date);
+                    const urgent = daysText === 'Today!' || daysText === 'Tomorrow';
+                    return (
+                      <div key={ex.id} className="flex items-center justify-between p-2.5 bg-surface-hover rounded-xl group border border-transparent hover:border-border-subtle transition-colors">
+                        <div className="flex items-center gap-3">
+                          <span className={`text-[10px] font-black px-2 py-0.5 rounded ${urgent ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' : 'bg-text-primary/5 text-text-secondary'}`}>{daysText}</span>
+                          <span className="text-sm font-bold text-text-primary">{ex.subject}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => navigate('/timetable', { state: { subject: ex.subject, date: ex.date } })}
+                            className="p-1.5 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/40 rounded-lg transition-all flex items-center gap-1 group/btn"
+                            title="Generate Time Table"
+                          >
+                            <Zap size={14} className="group-hover/btn:scale-110" />
+                            <span className="text-[10px] font-black uppercase tracking-wider hidden group-hover/btn:inline-block">Plan</span>
+                          </button>
+                          <button onClick={() => removeExam(ex.id)} className="p-1 text-text-muted opacity-0 group-hover:opacity-100 hover:text-red-500 transition-all"><Trash2 size={12} /></button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </TiltCard>
           </div>
 
           {/* Study Stats */}
@@ -324,7 +323,7 @@ const StudentDashboard: React.FC = () => {
             )}
           </div>
 
-            {/* Latest Performance */}
+          {/* Latest Performance */}
           {latestReport && (
             <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-8 shadow-sm hover:shadow-xl hover:shadow-green-500/5 transition-all duration-300 animate-in fade-in duration-500">
               <div className="flex justify-between items-center mb-6">
@@ -366,11 +365,11 @@ const StudentDashboard: React.FC = () => {
             <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-4">Your Profile Snapshot</p>
             <div className="flex items-center gap-4 mb-4">
               {user?.avatar ? (
-                 <img src={user.avatar} alt="Profile" className="w-14 h-14 rounded-2xl flex-shrink-0 object-cover shadow-sm bg-surface-hover border border-border-subtle" />
+                <img src={user.avatar} alt="Profile" className="w-14 h-14 rounded-2xl flex-shrink-0 object-cover shadow-sm bg-surface-hover border border-border-subtle" />
               ) : (
-                 <div className="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 text-brand-600 flex items-center justify-center font-bold text-xl flex-shrink-0">
-                    {user?.name?.charAt(0) || 'S'}
-                 </div>
+                <div className="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 text-brand-600 flex items-center justify-center font-bold text-xl flex-shrink-0">
+                  {user?.name?.charAt(0) || 'S'}
+                </div>
               )}
               <div>
                 <h3 className="text-xl font-black mb-0.5 tracking-tight">{user?.name || 'Student'}</h3>
@@ -379,7 +378,7 @@ const StudentDashboard: React.FC = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-xs font-bold text-text-secondary bg-surface-hover px-3 py-2 rounded-xl">
                 <Clock size={14} className="text-brand-500" /> Class of {user?.graduationYear || '2025'}

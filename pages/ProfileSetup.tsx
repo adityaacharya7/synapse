@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../App';
-import { ArrowRight, Sparkles, GraduationCap, Target, Rocket, Briefcase, Check, ChevronRight } from 'lucide-react';
+import { ArrowRight, Sparkles, GraduationCap, Target, Rocket, Briefcase, Check, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const Lanyard = lazy(() => import('../src/components/Lanyard/Lanyard'));
 
 const ProfileSetup: React.FC = () => {
   const { user, updateProfile } = useUser();
@@ -257,7 +259,7 @@ const ProfileSetup: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* Step 3: Launch */}
+              {/* Step 3: Launch — 3D Lanyard Student ID */}
               {step === 3 && (
                 <motion.div
                   key="step3"
@@ -266,74 +268,100 @@ const ProfileSetup: React.FC = () => {
                   animate="center"
                   exit="exit"
                   transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-                  className="space-y-8 text-center"
+                  className="space-y-6 text-center"
                 >
+                  {/* 3D Lanyard */}
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", bounce: 0.5, delay: 0.2 }}
-                    className="relative inline-block"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                    className="relative rounded-2xl overflow-hidden"
+                    style={{ marginLeft: '-1rem', marginRight: '-1rem' }}
                   >
-                    <div className="w-24 h-24 bg-gradient-to-br from-brand-600 to-violet-600 text-white rounded-[2rem] flex items-center justify-center mx-auto shadow-2xl shadow-brand-500/30">
-                      <Sparkles size={44} />
-                    </div>
-                    <motion.div
-                      animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0, 0.3] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute inset-0 bg-brand-500 rounded-[2rem] blur-xl"
-                    />
+                    <Suspense
+                      fallback={
+                        <div className="flex items-center justify-center h-[420px] bg-surface/30 rounded-2xl">
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                          >
+                            <Loader2 size={32} className="text-brand-500" />
+                          </motion.div>
+                        </div>
+                      }
+                    >
+                      <Lanyard
+                        position={[0, 0, 6]}
+                        gravity={[0, -40, 0]}
+                        fov={45}
+                        userData={{
+                          name: user?.name,
+                          avatar: user?.avatar,
+                          graduationYear: details.graduationYear,
+                          currentLevel: details.currentLevel,
+                          targetRole: details.targetRole,
+                        }}
+                      />
+                    </Suspense>
+                    {/* Drag hint */}
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.5 }}
+                      className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-bold text-text-muted/60 uppercase tracking-widest bg-bg-base/60 backdrop-blur-sm px-3 py-1 rounded-full"
+                    >
+                      ✦ Drag the card ✦
+                    </motion.p>
                   </motion.div>
 
-                  <div className="space-y-2">
+                  {/* Title */}
+                  <div className="space-y-1">
                     <motion.h2
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
-                      className="text-4xl font-black text-text-primary tracking-tight"
+                      className="text-3xl font-black text-text-primary tracking-tight"
                     >
-                      You're all set!
+                      Your Student ID is ready!
                     </motion.h2>
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.4 }}
-                      className="text-text-secondary font-medium"
+                      className="text-text-secondary font-medium text-sm"
                     >
-                      Your AI dashboard is ready and waiting.
+                      Welcome to Synapse, {user?.name?.split(' ')[0]}. Let's go.
                     </motion.p>
                   </div>
 
-                  {/* Summary card */}
+                  {/* Compact Summary */}
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="p-6 bg-surface/60 rounded-2xl border border-border-subtle text-left space-y-4 shadow-sm"
+                    className="flex items-center gap-4 p-4 bg-surface/60 rounded-2xl border border-border-subtle text-left"
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-brand-600 overflow-hidden border-2 border-border-subtle flex-shrink-0">
-                        {user?.avatar ? (
-                          <img src={user.avatar} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-white"><Sparkles size={20} /></div>
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-black text-text-primary">{user?.name}</p>
-                        <p className="text-xs text-text-muted font-bold">Class of {details.graduationYear} · {details.currentLevel}</p>
-                      </div>
+                    <div className="w-11 h-11 rounded-full bg-brand-600 overflow-hidden border-2 border-border-subtle flex-shrink-0">
+                      {user?.avatar ? (
+                        <img src={user.avatar} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-white"><Sparkles size={18} /></div>
+                      )}
                     </div>
-                    <div className="flex items-center justify-between pt-3 border-t border-border-subtle">
-                      <div>
-                        <p className="text-[10px] font-black text-text-muted uppercase tracking-widest">Target Role</p>
-                        <p className="text-lg font-black text-brand-600 dark:text-brand-400">{details.targetRole}</p>
-                      </div>
-                      <div className="px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-lg">
-                        <span className="text-[10px] font-black text-green-500 uppercase tracking-widest">Ready</span>
-                      </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-black text-text-primary text-sm truncate">{user?.name}</p>
+                      <p className="text-[11px] text-text-muted font-bold">Class of {details.graduationYear} · {details.currentLevel}</p>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-[9px] font-black text-text-muted uppercase tracking-widest">Target</p>
+                      <p className="text-sm font-black text-brand-600 dark:text-brand-400 truncate max-w-[120px]">{details.targetRole}</p>
+                    </div>
+                    <div className="px-2 py-1 bg-green-500/10 border border-green-500/20 rounded-lg flex-shrink-0">
+                      <span className="text-[9px] font-black text-green-500 uppercase tracking-widest">Ready</span>
                     </div>
                   </motion.div>
 
+                  {/* Launch Button */}
                   <motion.button
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

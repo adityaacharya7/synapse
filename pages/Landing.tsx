@@ -434,7 +434,7 @@ const Landing: React.FC = () => {
       <footer className="relative pt-16 pb-8 overflow-hidden bg-surface/30 border-t border-border-subtle">
         {/* Decorative background glow */}
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-500/5 rounded-full blur-[120px] pointer-events-none" />
-        
+
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
             {/* Brand Section */}
@@ -493,9 +493,9 @@ const Landing: React.FC = () => {
                 <p className="text-xs text-text-secondary font-medium leading-relaxed">
                   Developed as part of academic learning and exploration at:
                 </p>
-                <a 
-                  href="https://www.pce.ac.in/" 
-                  target="_blank" 
+                <a
+                  href="https://www.pce.ac.in/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="group block"
                 >
