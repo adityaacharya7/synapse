@@ -146,13 +146,7 @@ const PerformanceAnalyzer: React.FC = () => {
           )}
         </div>
       )}
-<<<<<<< HEAD
-
       <div className="grid xl:grid-cols-12 gap-8">
-=======
- 
-      <div className="grid lg:grid-cols-12 gap-8">
->>>>>>> 040947332b67bd8351399d24b1e36b792692d987
         {/* LEFT: Input */}
         <div className="xl:col-span-5 space-y-6">
           <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 p-8 shadow-sm space-y-6">
