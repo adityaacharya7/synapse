@@ -63,9 +63,9 @@ const Landing: React.FC = () => {
         displayItemNumbering={true}
         className="z-[70]"
         items={[
-          { label: 'News', link: '#news', ariaLabel: 'News section' },
+          { label: 'ABOUT', link: '#/about', ariaLabel: 'About us' },
           { label: 'Contact', link: '#contact', ariaLabel: 'Contact us' },
-          { label: 'Log In', link: '#login', ariaLabel: 'Log in to your account' }
+          { label: 'Log In', link: '#/login', ariaLabel: 'Log in to your account' }
         ]}
         socialItems={[]}
         displaySocials={false}

@@ -30,6 +30,7 @@ import Timetable from './pages/Timetable';
 import InterviewPrep from './pages/InterviewPrep';
 import Flashcards from './pages/Flashcards';
 import AllTools from './pages/AllTools';
+import About from './pages/About';
 import Dock from './src/components/Dock';
 import DashboardHeader from './src/components/DashboardHeader';
 import DockOnboarding from './src/components/DockOnboarding';
@@ -57,7 +58,7 @@ const GlobalUIOverlays = ({ isInitialLoading }: { isInitialLoading?: boolean }) 
   const navigate = useNavigate();
 
   // Hide Dock and TopNav while loading or on auth/marketing pages
-  if (isInitialLoading || ['/', '/login', '/profile-setup'].includes(location.pathname)) return null;
+  if (isInitialLoading || ['/', '/login', '/profile-setup', '/about'].includes(location.pathname)) return null;
 
   const dockItems = [
     { label: 'Dashboard', icon: <Layout size={20} className="text-sky-500 dark:text-sky-400" />, className: "hover:shadow-[0_0_15px_rgba(14,165,233,0.3)] dark:hover:shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:border-sky-500/30 transition-shadow transition-colors", onClick: () => navigate('/dashboard') },
@@ -76,7 +77,7 @@ const GlobalUIOverlays = ({ isInitialLoading }: { isInitialLoading?: boolean }) 
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[100] w-full md:w-[60%] h-12 md:h-8 group hover:h-40 flex justify-center pointer-events-auto">
         {/* Subtle iOS-like home indicator—pulsing for extra discoverability on desktop */}
         <div className="hidden md:block absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1.5 rounded-full border border-border-subtle bg-surface/80 backdrop-blur-md group-hover:opacity-0 transition-opacity duration-300 shadow-[0_0_10px_rgba(139,92,246,0.3)] animate-pulse"></div>
-        
+
         {/* Native feel: Solid on mobile, elegant spring reveal on desktop hovers */}
         <div className="absolute bottom-4 md:-bottom-32 left-0 w-full md:group-hover:bottom-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-100 md:opacity-0 md:group-hover:opacity-100 flex justify-center pointer-events-auto">
           <Dock
@@ -109,11 +110,11 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
 const MainContent = () => {
   const location = useLocation();
-  const isMarketingPage = ['/', '/login', '/profile-setup'].includes(location.pathname);
+  const isMarketingPage = ['/', '/login', '/profile-setup', '/about'].includes(location.pathname);
 
   return (
-    <main 
-      className={`flex-1 w-full bg-bg-base text-text-primary overflow-auto scroll-smooth ${isMarketingPage ? 'pb-0' : 'pb-32'}`} 
+    <main
+      className={`flex-1 w-full bg-bg-base text-text-primary overflow-auto scroll-smooth ${isMarketingPage ? 'pb-0' : 'pb-32'}`}
       style={{ backgroundColor: 'var(--bg-base)' }}
     >
       <Routes>
@@ -137,6 +138,7 @@ const MainContent = () => {
         <Route path="/interview" element={<ProtectedRoute><InterviewPrep /></ProtectedRoute>} />
         <Route path="/flashcards" element={<ProtectedRoute><Flashcards /></ProtectedRoute>} />
         <Route path="/tools" element={<ProtectedRoute><AllTools /></ProtectedRoute>} />
+        <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
       </Routes>
     </main>
@@ -171,7 +173,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // Determine a minimum time to show the loading screen (e.g. 2.2s)
     const minLoadTime = new Promise(resolve => setTimeout(resolve, 2200));
-    
+
     // Failsafe: Hide loading screen after 5 seconds regardless of what happens
     const safetyTimeout = setTimeout(() => {
       setIsInitialLoading(false);
@@ -198,7 +200,7 @@ const App: React.FC = () => {
       } else {
         setUser(null);
       }
-      
+
       // Hide loading screen after minimum display time AND Firebase check resolves
       minLoadTime.then(() => {
         setIsInitialLoading(false);
@@ -246,14 +248,14 @@ const App: React.FC = () => {
     <UserContext.Provider value={{ user, login, logout, updateProfile }}>
       <ThemeContext.Provider value={{ isDark, toggleTheme }}>
         <AnimatePresence mode="wait">
-            {isInitialLoading && <LoadingScreen key="loading-screen" />}
-          </AnimatePresence>
-          <Router>
-            <div className="relative min-h-screen transition-colors bg-bg-base overflow-x-hidden flex flex-col">
-              <GlobalUIOverlays isInitialLoading={isInitialLoading} />
-              <MainContent key="main-app-content" />
-            </div>
-          </Router>
+          {isInitialLoading && <LoadingScreen key="loading-screen" />}
+        </AnimatePresence>
+        <Router>
+          <div className="relative min-h-screen transition-colors bg-bg-base overflow-x-hidden flex flex-col">
+            <GlobalUIOverlays isInitialLoading={isInitialLoading} />
+            <MainContent key="main-app-content" />
+          </div>
+        </Router>
       </ThemeContext.Provider>
     </UserContext.Provider>
   );
