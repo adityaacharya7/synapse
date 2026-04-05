@@ -94,6 +94,39 @@ const GlobalUIOverlays = ({ isInitialLoading }: { isInitialLoading?: boolean }) 
   );
 };
 
+const GlobalBackground = () => {
+  const { isDark } = useTheme();
+  const location = useLocation();
+  const excludePages = ['/', '/login'];
+  const showVideo = isDark && !excludePages.includes(location.pathname);
+
+  useEffect(() => {
+    if (showVideo) {
+      document.body.classList.add('video-bg-active');
+    } else {
+      document.body.classList.remove('video-bg-active');
+    }
+    return () => document.body.classList.remove('video-bg-active');
+  }, [showVideo]);
+
+  if (!showVideo) return null;
+
+  return (
+    <div className="fixed inset-0 z-[-1] overflow-hidden bg-[#020617]">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full h-full object-cover"
+      >
+        <source src="/darkmode_wallpaper.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-[#020617]/60 pointer-events-none" />
+    </div>
+  );
+};
+
 const ProtectedRoute = ({ children }: { children?: React.ReactNode }) => {
   const { user } = useUser();
   if (!user) return <Navigate to="/login" replace />;
@@ -111,12 +144,15 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
 const MainContent = () => {
   const location = useLocation();
+  const { isDark } = useTheme();
   const isMarketingPage = ['/', '/login', '/profile-setup', '/about', '/contact'].includes(location.pathname);
+  const excludePages = ['/', '/login'];
+  const showVideo = isDark && !excludePages.includes(location.pathname);
 
   return (
     <main
-      className={`flex-1 w-full bg-bg-base text-text-primary overflow-auto scroll-smooth ${isMarketingPage ? 'pb-0' : 'pb-32'}`}
-      style={{ backgroundColor: 'var(--bg-base)' }}
+      className={`flex-1 w-full text-text-primary overflow-auto scroll-smooth ${isMarketingPage ? 'pb-0' : 'pb-32'}`}
+      style={{ backgroundColor: showVideo ? 'transparent' : 'var(--bg-base)' }}
     >
       <Routes>
         <Route path="/" element={<Landing />} />
@@ -253,7 +289,11 @@ const App: React.FC = () => {
           {isInitialLoading && <LoadingScreen key="loading-screen" />}
         </AnimatePresence>
         <Router>
-          <div className="relative min-h-screen transition-colors bg-bg-base overflow-x-hidden flex flex-col">
+          <div 
+            className="relative min-h-screen transition-colors overflow-x-hidden flex flex-col"
+            style={{ backgroundColor: isDark ? 'transparent' : 'var(--bg-base)' }}
+          >
+            <GlobalBackground />
             <GlobalUIOverlays isInitialLoading={isInitialLoading} />
             <MainContent key="main-app-content" />
           </div>

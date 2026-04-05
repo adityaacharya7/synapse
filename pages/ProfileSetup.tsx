@@ -39,7 +39,7 @@ const ProfileSetup: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-base flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors">
 
       {/* Ambient background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

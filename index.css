@@ -36,6 +36,10 @@
     --border-subtle: #1e293b; /* slate-800 */
     --border-divider: #334155; /* slate-700 */
   }
+
+  body.video-bg-active {
+    --bg-base: transparent !important;
+  }
 }
 
 /* ── Custom Theme ── */

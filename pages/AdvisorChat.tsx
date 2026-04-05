@@ -166,7 +166,7 @@ const AdvisorChat: React.FC = () => {
   const isEmptyState = messages.length <= 1;
 
   return (
-    <div className="h-screen flex bg-bg-base transition-colors duration-300 overflow-hidden text-text-primary">
+    <div className="h-screen flex transition-colors duration-300 overflow-hidden text-text-primary">
       {/* ── History Sidebar ── */}
       <div
         className="h-full flex-shrink-0 border-r border-border-subtle flex flex-col overflow-hidden transition-all duration-300 ease-in-out bg-surface/50"

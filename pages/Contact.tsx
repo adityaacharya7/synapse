@@ -65,7 +65,7 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <div className="relative min-h-screen bg-bg-base overflow-x-hidden font-sans">
+    <div className="relative min-h-screen overflow-x-hidden font-sans">
       
       {/* Background Effect */}
       <div className="absolute inset-0 z-0">
