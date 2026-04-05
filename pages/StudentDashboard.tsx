@@ -179,24 +179,45 @@ const StudentDashboard: React.FC = () => {
       </header>
 
       {/* Quick Access Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {quickLinks.map(item => (
-          <Link key={item.path} to={item.path}
-            className="group relative overflow-hidden rounded-3xl p-6 text-white shadow-lg shadow-brand-500/10 hover:shadow-xl hover:shadow-brand-500/20 transition-all hover:scale-[1.02] active:scale-95">
-            <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient}`}></div>
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-            <div className="relative z-10">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <item.icon size={24} />
+      <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        {quickLinks.map((item, idx) => {
+          const isPrimary = idx === 0;
+          return (
+            <Link key={item.path} to={item.path}
+              className={`group relative overflow-hidden text-white transition-all active:scale-95 flex flex-col justify-between ${
+                isPrimary 
+                  ? 'p-8 md:col-span-3 lg:col-span-2 rounded-[2rem] shadow-2xl shadow-brand-500/20 hover:shadow-brand-500/40 hover:scale-[1.01] border border-white/20' 
+                  : 'p-6 rounded-3xl shadow-lg shadow-brand-500/10 hover:shadow-xl hover:shadow-brand-500/20 hover:scale-[1.02]'
+              }`}>
+              <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient}`}></div>
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+              {/* Add an animated glow layer for primary */}
+              {isPrimary && <div className="absolute -inset-1 bg-gradient-to-r from-brand-400 to-indigo-500 opacity-20 blur-xl group-hover:opacity-40 transition-opacity"></div>}
+              
+              <div className="relative z-10 flex flex-col h-full justify-between gap-4">
+                <div className="flex justify-between items-start w-full">
+                  <div className={`bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform ${isPrimary ? 'w-16 h-16 shadow-lg shadow-black/20' : 'w-12 h-12'}`}>
+                    <item.icon size={isPrimary ? 32 : 24} className={isPrimary ? 'animate-pulse' : ''} />
+                  </div>
+                  {isPrimary && (
+                    <span className="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-[10px] font-black uppercase tracking-widest border border-white/30 shadow-sm flex items-center gap-1.5">
+                      <Sparkles size={12} className="text-yellow-300" /> Start Here
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-auto">
+                  <h3 className={`font-black tracking-tight mb-1.5 ${isPrimary ? 'text-3xl lg:text-4xl' : 'text-lg'}`}>{item.label}</h3>
+                  <p className={`text-white/80 font-medium leading-snug ${isPrimary ? 'text-base max-w-sm' : 'text-sm'}`}>{item.desc}</p>
+                  
+                  <div className={`mt-4 flex items-center gap-1.5 font-bold group-hover:gap-2.5 transition-all ${isPrimary ? 'text-white text-sm bg-white/20 w-fit px-4 py-2 rounded-xl border border-white/10 group-hover:bg-white/30' : 'text-white/70 text-xs group-hover:text-white/90'}`}>
+                    {isPrimary ? 'Launch Tool' : 'Open'} <ArrowRight size={isPrimary ? 16 : 12} />
+                  </div>
+                </div>
               </div>
-              <h3 className="font-black text-lg mb-1">{item.label}</h3>
-              <p className="text-white/80 text-sm font-medium">{item.desc}</p>
-              <div className="mt-4 flex items-center gap-1 text-white/70 text-xs font-bold group-hover:text-white/90 group-hover:gap-2 transition-all">
-                Open <ArrowRight size={12} />
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </section>
 
       {/* Main 12-Column Grid */}
@@ -209,22 +230,36 @@ const StudentDashboard: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Study Streak */}
             <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-6 shadow-sm flex flex-col hover:border-brand-500/20 transition-colors">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex justify-between items-center mb-5">
                 <h3 className="font-black text-text-primary flex items-center gap-2"><Flame size={18} className="text-orange-500" /> Study Streak</h3>
-                <span className="text-2xl font-black text-orange-500">{studyStreak} 🔥</span>
+                <span className="text-2xl font-black text-orange-500 flex items-center gap-1">
+                  {studyStreak} <Flame size={20} className={studyStreak > 0 ? "animate-bounce" : "opacity-50"} />
+                </span>
               </div>
-              <div className="flex justify-between gap-2">
+              <div className="flex justify-between gap-1.5 md:gap-2">
                 {last7.map((d, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1.5">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${d.active ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-surface-hover text-text-muted'
+                  <div key={i} className="flex flex-col items-center gap-2 flex-1">
+                    <div className={`w-full aspect-square max-w-[40px] rounded-xl flex items-center justify-center transition-all ${d.active ? 'bg-gradient-to-br from-orange-400 to-red-500 text-white shadow-lg shadow-orange-500/30 scale-110 rotate-[2deg]' : 'bg-surface-focus/30 text-text-muted border border-dashed border-border-divider/50'
                       }`}>
-                      {d.active ? <Flame size={14} /> : <span className="text-xs">·</span>}
+                      {d.active ? <Flame size={18} className="drop-shadow-sm" /> : <span className="text-xs font-bold opacity-30">×</span>}
                     </div>
-                    <span className="text-[9px] font-bold text-text-muted uppercase">{d.label}</span>
+                    <span className={`text-[10px] font-black uppercase ${d.active ? 'text-orange-500' : 'text-text-muted'}`}>{d.label}</span>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-text-muted mt-auto pt-3">Use any Synapse tool to keep your streak alive!</p>
+              <div className="mt-auto pt-6 text-center">
+                {studyStreak > 0 ? (
+                  <div className="inline-block px-5 py-2.5 bg-orange-500/10 text-orange-500 rounded-2xl border border-orange-500/20">
+                    <p className="text-[15px] font-black tracking-wide">You're on a {studyStreak}-day streak! 🔥</p>
+                    <p className="text-[10px] font-bold text-orange-600/70 dark:text-orange-400/80 mt-0.5 uppercase tracking-wide">Don't break it. Keep learning.</p>
+                  </div>
+                ) : (
+                  <div className="inline-block px-5 py-2.5 bg-surface-hover text-text-secondary rounded-2xl border border-border-subtle">
+                    <p className="text-[15px] font-black tracking-wide text-text-primary">Ready to begin?</p>
+                    <p className="text-[10px] font-bold text-text-muted mt-0.5 uppercase tracking-wide">Start your first streak today.</p>
+                  </div>
+                )}
+              </div>
             </TiltCard>
 
             {/* Upcoming Exams */}
@@ -279,10 +314,10 @@ const StudentDashboard: React.FC = () => {
 
           {/* Study Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <StatCard label="Quizzes Taken" value={quizzes.length} icon={<Brain size={18} />} color="text-purple-600 dark:text-purple-400" bg="bg-purple-50 dark:bg-purple-900/20" loading={loading} progress={Math.min(quizzes.length * 10, 100)} fill="bg-purple-500" />
-            <StatCard label="Avg Quiz Score" value={avgQuizScore !== null ? `${avgQuizScore}%` : '—'} icon={<Trophy size={18} />} color="text-yellow-600 dark:text-yellow-400" bg="bg-yellow-50 dark:bg-yellow-900/20" loading={loading} progress={avgQuizScore !== null ? avgQuizScore : 0} fill="bg-yellow-500" />
-            <StatCard label="Notes Saved" value={notes.length} icon={<BookOpen size={18} />} color="text-blue-600 dark:text-blue-400" bg="bg-blue-50 dark:bg-blue-900/20" loading={loading} progress={Math.min(notes.length * 5, 100)} fill="bg-blue-500" />
-            <StatCard label="Transcripts" value={transcripts.length} icon={<AudioLines size={18} />} color="text-orange-600 dark:text-orange-400" bg="bg-orange-50 dark:bg-orange-900/20" loading={loading} progress={Math.min(transcripts.length * 5, 100)} fill="bg-orange-500" />
+            <StatCard label="Quizzes Taken" value={quizzes.length} icon={<Brain size={18} />} color="text-purple-600 dark:text-purple-400" bg="bg-purple-50 dark:bg-purple-900/20" loading={loading} progress={Math.min(quizzes.length * 10, 100)} fill="bg-purple-500" emptyCta="Take first quiz" emptyPath="/quiz" />
+            <StatCard label="Avg Quiz Score" value={avgQuizScore !== null ? `${avgQuizScore}%` : '—'} icon={<Trophy size={18} />} color="text-yellow-600 dark:text-yellow-400" bg="bg-yellow-50 dark:bg-yellow-900/20" loading={loading} progress={avgQuizScore !== null ? avgQuizScore : 0} fill="bg-yellow-500" emptyCta="Train your brain" emptyPath="/quiz" />
+            <StatCard label="Notes Saved" value={notes.length} icon={<BookOpen size={18} />} color="text-blue-600 dark:text-blue-400" bg="bg-blue-50 dark:bg-blue-900/20" loading={loading} progress={Math.min(notes.length * 5, 100)} fill="bg-blue-500" emptyCta="Upload some notes" emptyPath="/notes" />
+            <StatCard label="Transcripts" value={transcripts.length} icon={<AudioLines size={18} />} color="text-orange-600 dark:text-orange-400" bg="bg-orange-50 dark:bg-orange-900/20" loading={loading} progress={Math.min(transcripts.length * 5, 100)} fill="bg-orange-500" emptyCta="Transcribe lecture" emptyPath="/transcript" />
           </div>
 
           {/* Recent Activity */}
@@ -361,42 +396,79 @@ const StudentDashboard: React.FC = () => {
         <div className="lg:col-span-4 flex flex-col gap-6">
 
           {/* Profile Snapshot - Rebuilt explicitly for the "fix the profile information" request */}
-          <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-6 text-text-primary shadow-sm hover:border-brand-500/30 transition-all duration-300">
-            <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-4">Your Profile Snapshot</p>
-            <div className="flex items-center gap-4 mb-4">
-              {user?.avatar ? (
-                <img src={user.avatar} alt="Profile" className="w-14 h-14 rounded-2xl flex-shrink-0 object-cover shadow-sm bg-surface-hover border border-border-subtle" />
-              ) : (
-                <div className="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 text-brand-600 flex items-center justify-center font-bold text-xl flex-shrink-0">
-                  {user?.name?.charAt(0) || 'S'}
+          <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-6 xl:p-8 text-text-primary shadow-sm hover:border-brand-500/30 transition-all duration-300 relative overflow-hidden">
+            {/* Ambient Background Glow */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-500/10 blur-3xl rounded-full pointer-events-none"></div>
+
+            <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-5 border-b border-border-subtle pb-3">Your Identity</p>
+            
+            <div className="flex items-center gap-5 mb-6">
+              <div className="relative group/avatar cursor-pointer">
+                {/* Glowing ring around avatar */}
+                <div className="absolute -inset-1 bg-gradient-to-tr from-brand-500 to-sky-400 rounded-[1.1rem] blur-sm opacity-40 group-hover/avatar:opacity-75 transition-opacity duration-500"></div>
+                {user?.avatar ? (
+                  <img src={user.avatar} alt="Profile" className="relative w-[72px] h-[72px] rounded-2xl flex-shrink-0 object-cover shadow-md bg-surface-hover border-2 border-surface" />
+                ) : (
+                  <div className="relative w-[72px] h-[72px] rounded-2xl bg-gradient-to-br from-brand-600 to-indigo-700 border-2 border-surface text-white flex items-center justify-center font-black text-3xl flex-shrink-0 shadow-lg shadow-brand-500/30">
+                    {user?.name?.charAt(0) || 'S'}
+                  </div>
+                )}
+                {/* Micro Level Badge on Avatar */}
+                <div className="absolute -bottom-2 -right-2 bg-sky-500 text-white text-[10px] font-black px-2 py-0.5 rounded-lg border-2 border-surface shadow-md">
+                  LVL
                 </div>
-              )}
-              <div>
-                <h3 className="text-xl font-black mb-0.5 tracking-tight">{user?.name || 'Student'}</h3>
-                <p className="text-text-secondary text-xs font-bold uppercase tracking-wider">
-                  {user?.targetRole || 'Exploring'}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-2xl font-black mb-0.5 tracking-tight truncate">{user?.name || 'Student'}</h3>
+                <p className="text-brand-600 dark:text-brand-400 text-[11px] font-black uppercase tracking-[0.15em] truncate">
+                  {user?.targetRole || 'Explorer'}
                 </p>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold text-text-secondary bg-surface-hover px-3 py-2 rounded-xl">
-                <Clock size={14} className="text-brand-500" /> Class of {user?.graduationYear || '2025'}
+            <div className="space-y-5 relative z-10">
+              <div className="flex items-center gap-2 text-xs font-bold text-text-primary bg-surface-hover/80 px-4 py-2.5 rounded-xl border border-border-subtle w-fit">
+                <Clock size={14} className="text-brand-500" /> Class of <span className="text-brand-600 dark:text-brand-400">{user?.graduationYear || '2025'}</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {(user?.skills || []).slice(0, 4).map(skill => (
-                  <span key={skill} className="text-[10px] font-bold px-2.5 py-1 bg-brand-500/10 text-brand-600 dark:text-brand-400 rounded-lg border border-brand-500/20">
+                  <span key={skill} className="text-[10px] font-black px-3 py-1.5 bg-brand-500/10 text-brand-600 dark:text-brand-400 rounded-lg border border-brand-500/20 group hover:bg-brand-500/20 transition-colors cursor-default">
                     {skill}
                   </span>
                 ))}
                 {(user?.skills || []).length > 4 && (
-                  <span className="text-[10px] font-bold px-2 py-1 bg-surface-hover text-text-muted rounded-lg border border-border-subtle">
+                  <span className="text-[10px] font-black px-3 py-1.5 bg-surface-hover text-text-muted rounded-lg border border-border-subtle cursor-default">
                     +{(user?.skills || []).length - 4} more
                   </span>
                 )}
               </div>
-              <div className="pt-4 mt-2 border-t border-border-subtle">
-                <span className="px-3 py-1.5 bg-brand-600 text-white rounded-lg font-bold text-xs shadow-md shadow-brand-500/20 inline-block">Current Level: {user?.currentLevel}</span>
+
+              {/* XP System Mock */}
+              <div className="pt-5 mt-2 border-t border-border-subtle space-y-3">
+                <div className="flex justify-between items-end mb-1">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-black text-text-muted uppercase tracking-[0.2em] mb-1">Current Rank</span>
+                    <span className="px-3 py-1.5 bg-brand-600 text-white rounded-xl font-bold text-xs shadow-md shadow-brand-500/20 shrink-0 self-start">
+                      {user?.currentLevel || 'Beginner'}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] font-black text-text-muted block mb-1 uppercase tracking-widest hidden sm:block">XP Progress</span>
+                    <span className="text-sm font-black text-brand-600 dark:text-brand-400">
+                      {Math.min((quizzes.length + notes.length) * 50, 1000)} <span className="text-[10px] text-text-muted">/ 1000</span>
+                    </span>
+                  </div>
+                </div>
+                {/* XP Progress Bar */}
+                <div className="w-full h-2.5 bg-surface-focus rounded-full overflow-hidden shadow-inner relative">
+                  <div 
+                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-500 via-indigo-400 to-sky-400 transition-all duration-1000 ease-out" 
+                    style={{ width: `${Math.max(5, Math.min(((quizzes.length + notes.length) * 50) / 1000 * 100, 100))}%` }}
+                  >
+                    <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-[progress_1s_linear_infinite]"></div>
+                  </div>
+                </div>
+                <p className="text-[9px] font-black text-text-muted text-center tracking-[0.2em] uppercase mt-2">Earn XP by taking quizzes & saving notes</p>
               </div>
             </div>
           </TiltCard>
@@ -442,23 +514,42 @@ const StudentDashboard: React.FC = () => {
 
 // ── Sub Components ──
 
-const StatCard = ({ label, value, icon, color, bg, loading, progress, fill }: { label: string; value: string | number; icon: React.ReactNode; color: string; bg: string; loading: boolean, progress: number, fill: string }) => (
-  <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
-    <div className={`w-10 h-10 ${bg} ${color} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-      {icon}
-    </div>
-    <p className="text-2xl font-black text-text-primary">
-      {loading ? <span className="inline-block w-8 h-6 bg-surface-hover rounded animate-pulse"></span> : value}
-    </p>
-    <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mt-1 mb-3">{label}</p>
-    {/* Micro Visualization */}
-    {!loading && (
-      <div className="w-full h-1 bg-surface-hover rounded-full overflow-hidden">
-        <div className={`h-full ${fill} transition-all duration-1000 ease-out`} style={{ width: `${progress}%` }} />
+const StatCard = ({ label, value, icon, color, bg, loading, progress, fill, emptyCta, emptyPath }: { label: string; value: string | number; icon: React.ReactNode; color: string; bg: string; loading: boolean, progress: number, fill: string, emptyCta?: string, emptyPath?: string }) => {
+  const isEmpty = value === 0 || value === '—';
+
+  return (
+    <TiltCard className="bg-surface border border-border-subtle rounded-3xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group flex flex-col justify-between">
+      <div>
+        <div className={`w-10 h-10 ${bg} ${color} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+          {icon}
+        </div>
+        <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">{label}</p>
+        
+        {isEmpty && emptyCta && emptyPath ? (
+          <div className="mt-2 mb-3">
+            <Link to={emptyPath} className={`inline-flex items-center gap-1 ${color} text-[11px] font-black hover:underline`}>
+              {emptyCta} <ArrowRight size={12} />
+            </Link>
+          </div>
+        ) : (
+          <p className="text-2xl font-black text-text-primary mb-3">
+            {loading ? <span className="inline-block w-8 h-6 bg-surface-hover rounded animate-pulse"></span> : value}
+          </p>
+        )}
       </div>
-    )}
-  </TiltCard>
-);
+      
+      {/* Micro Visualization */}
+      {!loading && !isEmpty && (
+        <div className="w-full h-1.5 bg-surface-hover rounded-full overflow-hidden mt-auto">
+          <div className={`h-full ${fill} transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(0,0,0,0.5)]`} style={{ width: `${progress}%`, backgroundColor: 'currentcolor' }} />
+        </div>
+      )}
+      {!loading && isEmpty && (
+        <div className="w-full h-1.5 bg-surface-hover/50 rounded-full overflow-hidden mt-auto" />
+      )}
+    </TiltCard>
+  );
+};
 
 const QuickToolLink = ({ label, desc, icon, path }: { label: string; desc: string; icon: React.ReactNode; path: string }) => (
   <Link to={path} className="flex items-center gap-3 p-3 rounded-2xl hover:bg-surface-hover transition-colors group">
