@@ -258,13 +258,27 @@ Open your browser and navigate to the localhost link provided by Vite (typically
 
 ## 👥 Team Members
 - Aditya Acharya
-- Member 2
-- Member 3
+- Snehal Chavan
+- Anushka Nandakumar
+- Aryan Algawe
+- Aditya Vijaykumar
+- Tanisha Balekar
+- Mandar Awatade
+- Chinamy Santosh
+- Bharat Sirmal
+- Arpit Bolade
 
 ## 📌 GitHub Contributions
-- **Aditya Acharya** – Project architecture, AI integration, frontend development
-- **Member 2** – Contribution details
-- **Member 3** – Contribution details
+- **Aditya Acharya** – Project architecture, UI development, login authentication, resume builder, transcript module  
+- **Snehal Chavan** – Interview Preparation feature  
+- **Anushka Nandakumar** – Notes Summarizer, landing page design  
+- **Aryan Algawe** – Flashcards feature based on uploaded content  
+- **Aditya Vijaykumar** – AI timetable generator based on user goals and deadlines  
+- **Tanisha Balekar** – AI Quiz Maker with adaptive difficulty  
+- **Mandar Awatade** – Skill Roadmap feature for structured learning paths  
+- **Chinamy Santosh** – YouTube video transcriber for note generation  
+- **Bharat Sirmal** – Feedback system for Interview Preparation feature  
+- **Arpit Bolade** – Performance Analyzer with improvement suggestions  
 
 ## 📚 References
 - [Google Gemini API Documentation](https://ai.google.dev/docs)
