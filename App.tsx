@@ -83,10 +83,10 @@ const GlobalUIOverlays = ({ isInitialLoading }: { isInitialLoading?: boolean }) 
         <div className="absolute bottom-4 md:-bottom-32 left-0 w-full md:group-hover:bottom-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-100 md:opacity-0 md:group-hover:opacity-100 flex justify-center pointer-events-auto">
           <Dock
             items={dockItems}
-            panelHeight={64}
-            baseItemSize={48}
-            magnification={72}
-            className="bg-white/70 dark:bg-[#0b0c10]/70 backdrop-blur-3xl shadow-2xl dark:shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-black/10 dark:border-white/10 rounded-3xl text-text-primary dark:text-white pointer-events-auto shadow-brand-500/10 md:group-hover:shadow-brand-500/20"
+            panelHeight={76}
+            baseItemSize={58}
+            magnification={86}
+            className="bg-white/85 dark:bg-[#020617]/85 backdrop-blur-[48px] shadow-[0_10px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_0_40px_rgba(139,92,246,0.15)] border border-black/10 dark:border-brand-500/40 rounded-[2rem] text-text-primary dark:text-white pointer-events-auto md:group-hover:shadow-[0_0_60px_rgba(139,92,246,0.3)] md:group-hover:border-brand-500/60 transition-all duration-500"
           />
         </div>
       </div>
