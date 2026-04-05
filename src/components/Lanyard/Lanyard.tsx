@@ -66,19 +66,6 @@ function drawBackCanvas(logoImg?: HTMLImageElement): HTMLCanvasElement {
   const ctx = c.getContext('2d')!;
 
   ctx.clearRect(0, 0, W, H);
-  const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, 'rgba(30, 15, 60, 0.95)');
-  bg.addColorStop(0.5, 'rgba(25, 12, 55, 0.95)');
-  bg.addColorStop(1, 'rgba(20, 10, 48, 0.95)');
-  ctx.fillStyle = bg;
-  ctx.beginPath();
-  ctx.roundRect(0, 0, W, H, 16);
-  ctx.fill();
-
-  ctx.strokeStyle = 'rgba(124, 58, 237, 0.35)';
-  ctx.lineWidth = 4;
-  ctx.roundRect(6, 6, W - 12, H - 12, 14);
-  ctx.stroke();
 
   const cx = W / 2;
   const cy = H / 2;
@@ -100,7 +87,7 @@ function drawBackCanvas(logoImg?: HTMLImageElement): HTMLCanvasElement {
   // Decorative dots
   for (let i = 0; i < 3; i++) {
     ctx.beginPath();
-    ctx.arc(cx - 18 + i * 18, H - 50, 4, 0, Math.PI * 2);
+    ctx.arc(cx - 18 + i * 18, H - 80, 4, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(124, 58, 237, 0.4)';
     ctx.fill();
   }
@@ -118,36 +105,8 @@ function drawOverlayCanvas(userData?: LanyardUserData, logoImg?: HTMLImageElemen
   // Transparent base (we'll see the dark card behind)
   ctx.clearRect(0, 0, W, H);
 
-  // Deep purple background
-  const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, 'rgba(30, 15, 60, 0.95)');
-  bg.addColorStop(0.5, 'rgba(25, 12, 55, 0.95)');
-  bg.addColorStop(1, 'rgba(20, 10, 48, 0.95)');
-  ctx.fillStyle = bg;
-  ctx.beginPath();
-  ctx.roundRect(0, 0, W, H, 16);
-  ctx.fill();
-
-  // Subtle purple border
-  ctx.strokeStyle = 'rgba(124, 58, 237, 0.35)';
-  ctx.lineWidth = 4;
-  ctx.roundRect(6, 6, W - 12, H - 12, 14);
-  ctx.stroke();
-
-  // Top accent line
-  const accent = ctx.createLinearGradient(W * 0.15, 0, W * 0.85, 0);
-  accent.addColorStop(0, 'rgba(124, 58, 237, 0)');
-  accent.addColorStop(0.5, 'rgba(124, 58, 237, 0.7)');
-  accent.addColorStop(1, 'rgba(59, 130, 246, 0)');
-  ctx.strokeStyle = accent;
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(W * 0.15, 36);
-  ctx.lineTo(W * 0.85, 36);
-  ctx.stroke();
-
   const cx = W / 2;
-  let y = 80;
+  let y = 140; // Shifted down to avoid strap and clip overlap
 
   // Synapse logo
   if (logoImg) {
@@ -243,7 +202,7 @@ function drawOverlayCanvas(userData?: LanyardUserData, logoImg?: HTMLImageElemen
   // Bottom decorative dots
   for (let i = 0; i < 3; i++) {
     ctx.beginPath();
-    ctx.arc(cx - 18 + i * 18, H - 50, 4, 0, Math.PI * 2);
+    ctx.arc(cx - 18 + i * 18, H - 80, 4, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(124, 58, 237, 0.4)';
     ctx.fill();
   }
