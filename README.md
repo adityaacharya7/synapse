@@ -254,7 +254,7 @@ Open your browser and navigate to the localhost link provided by Vite (typically
 - The conversational AI advisor provides contextually relevant academic guidance.
 
 ## 🎥 Demo Video
-[(https://youtu.be/FMVCy7P6BeE)]
+[(https://youtu.be/8GTAlPtExmk)]
 
 ## 👥 Team Members
 - Aditya Acharya
